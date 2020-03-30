@@ -7,7 +7,7 @@ const Header = ({ course }) => {
 
 const Total = ({ course }) => {
   const sum = course.parts.reduce((sum, part) => (sum += part.exercises), 0);
-  return <p>Number of exercises {sum}</p>;
+  return <h4>total of {sum} exercises </h4>;
 };
 
 const Part = props => {
@@ -53,14 +53,9 @@ const App = () => {
         id: 3
       },
       {
-        name: "Testy",
-        exercises: 21,
+        name: "Redux",
+        exercises: 11,
         id: 4
-      },
-      {
-        name: "Testy2",
-        exercises: 1,
-        id: 5
       }
     ]
   };
