@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Filter from "./components/Filter";
+import CountriesList from "./components/CountriesList";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
+  const [countriesFilter, setCountriesFilter] = useState("");
 
   useEffect(() => {
     console.log("effect");
@@ -12,23 +15,24 @@ const App = () => {
   }, []);
   console.log("render", countries.length, "countries");
 
-  const Country = ({ country }) => {
-    return <li>{country.name}</li>;
+  // const CountryInformation = ({countries}) => {
+  //   // name
+  //   // capital
+  //   // population
+
+  //   //languages
+
+  //   //flag
+  // }
+
+  const handleCountriesFilter = (event) => {
+    setCountriesFilter(event.target.value);
   };
 
-  const CountriesList = ({ countries }) => {
-    return (
-      <ul>
-        {countries.map((country) => (
-          <Country key={country.alpha3Code} country={country} />
-        ))}
-      </ul>
-    );
-  };
   return (
     <div>
-      <h1>Countries</h1>
-      <CountriesList countries={countries} />
+      {Filter(countriesFilter, handleCountriesFilter)}
+      <CountriesList countries={countries} countriesFilter={countriesFilter} />
     </div>
   );
 };
