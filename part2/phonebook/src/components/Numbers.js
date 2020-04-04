@@ -1,22 +1,17 @@
 import React from "react";
+import Person from "./Person";
 
 const Numbers = (persons, newNameFilter) => {
   if (newNameFilter === "") {
-    return persons.map(person => (
-      <li key={person.name}>
-        {person.name}: {person.number}
-      </li>
+    return persons.map((person) => (
+      <Person person={person} key={person.name} />
     ));
   } else {
     return persons
-      .filter(person =>
+      .filter((person) =>
         person.name.toLowerCase().includes(newNameFilter.toLowerCase())
       )
-      .map(person => (
-        <li key={person.name}>
-          {person.name}: {person.number}
-        </li>
-      ));
+      .map((person) => <Person key={person.name} person={person} />);
   }
 };
 
