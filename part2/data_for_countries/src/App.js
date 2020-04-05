@@ -15,16 +15,6 @@ const App = () => {
   }, []);
   console.log("render", countries.length, "countries");
 
-  // const CountryInformation = ({countries}) => {
-  //   // name
-  //   // capital
-  //   // population
-
-  //   //languages
-
-  //   //flag
-  // }
-
   const handleCountriesFilter = (event) => {
     setCountriesFilter(event.target.value);
   };
@@ -32,7 +22,11 @@ const App = () => {
   return (
     <div>
       {Filter(countriesFilter, handleCountriesFilter)}
-      <CountriesList countries={countries} countriesFilter={countriesFilter} />
+      <CountriesList
+        countries={countries}
+        countriesFilter={countriesFilter}
+        handleCountriesFilter={handleCountriesFilter}
+      />
     </div>
   );
 };
