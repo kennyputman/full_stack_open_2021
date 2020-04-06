@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "040-384923",
       "id": 1
     },
     {
@@ -21,14 +21,19 @@
       "id": 4
     },
     {
-      "name": "Another Person",
-      "number": "0923842",
+      "name": "Mary",
+      "number": "230842323",
       "id": 5
     },
     {
-      "name": "Another Test",
-      "number": "203840293843",
+      "name": "Paul",
+      "number": "209384029",
       "id": 6
+    },
+    {
+      "name": "Peter",
+      "number": "230984",
+      "id": 7
     }
   ]
 }

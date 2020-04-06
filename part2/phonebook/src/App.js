@@ -26,7 +26,28 @@ const App = () => {
     };
 
     if (persons.some((person) => person.name === nameObject.name)) {
-      window.alert(`${nameObject.name} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${nameObject.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const matchedPerson = persons.find(
+          (person) => person.name === nameObject.name
+        );
+        const updatedPerson = { ...matchedPerson, number: nameObject.number };
+
+        personsService
+          .changeNumber(updatedPerson.id, updatedPerson)
+          .then(() => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== updatedPerson.id ? person : updatedPerson
+              )
+            );
+            setNewNumber("");
+            setNewName("");
+          });
+      }
     } else {
       personsService
         .create(nameObject)
