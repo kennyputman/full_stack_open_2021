@@ -21,24 +21,14 @@
       "id": 4
     },
     {
-      "name": "Matthew",
-      "number": "93842308",
+      "name": "Another Person",
+      "number": "0923842",
       "id": 5
     },
     {
-      "name": "Paul",
-      "number": "2098343",
+      "name": "Another Test",
+      "number": "203840293843",
       "id": 6
-    },
-    {
-      "name": "Peter",
-      "number": "023049823",
-      "id": 7
-    },
-    {
-      "name": "Joseph",
-      "number": "2309302393",
-      "id": 8
     }
   ]
 }

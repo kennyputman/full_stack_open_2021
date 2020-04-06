@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Numbers from "./components/Numbers";
+import Contacts from "./components/Contacts";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import personsService from "./services/persons";
@@ -51,6 +51,14 @@ const App = () => {
     setNewNameFilter(event.target.value);
   };
 
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personsService.removePerson(person).then(() => {
+        setPersons(persons.filter((eachPerson) => eachPerson.id !== person.id));
+      });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -64,7 +72,7 @@ const App = () => {
         handleNumberChange
       )}
       <h3>Numbers</h3>
-      {Numbers(persons, newNameFilter)}
+      {Contacts(persons, newNameFilter, deletePerson)}
     </div>
   );
 };
