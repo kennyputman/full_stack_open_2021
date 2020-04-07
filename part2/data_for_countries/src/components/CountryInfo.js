@@ -26,9 +26,7 @@ const CountryInfo = ({ country }) => {
           ></img>
         </div>
       </div>
-      <div>
-        <Weather city={country.capital} />
-      </div>
+      <Weather city={country.capital} />
     </>
   );
 };
