@@ -56,6 +56,15 @@ const App = () => {
             );
             setNewNumber("");
             setNewName("");
+          })
+          .catch((error) => {
+            console.log(error);
+            setErrorMessage(
+              `Information on ${nameObject.name} has already been removed from the server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
           });
       }
     } else {
