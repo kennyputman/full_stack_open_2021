@@ -3,6 +3,7 @@ import Contacts from "./components/Contacts";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import personsService from "./services/persons";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,12 +11,21 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newNameFilter, setNewNameFilter] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
   }, []);
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null;
+    }
+
+    return <div className="error">{message}</div>;
+  };
 
   const addContact = (event) => {
     event.preventDefault();
@@ -55,6 +65,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson));
           setNewNumber("");
           setNewName("");
+          setErrorMessage(`Added ${nameObject.name}`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
         })
         .catch((error) => {
           console.log(error);
@@ -83,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage}></Notification>
       {Filter(newNameFilter, handleNameFilterChange)}
       <h3>Add a New Contact</h3>
       {PersonForm(
