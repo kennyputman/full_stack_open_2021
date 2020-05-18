@@ -92,8 +92,8 @@ describe("total likes", () => {
 });
 
 describe("favorite blog", () => {
-  test("favorite blog correct blog", () => {
-    const result = listHelper.favoriteBlog(blogsTestList);
+  test("returns blog with most likes", () => {
+    const result = listHelper.favoriteBlog(testBlogs);
     const favoriteBlogFormatted = {
       title: "Canonical string reduction",
       author: "Edsger W. Dijkstra",
