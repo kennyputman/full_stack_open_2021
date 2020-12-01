@@ -1,3 +1,4 @@
+const { max } = require("lodash");
 const _ = require("lodash");
 
 const dummy = (blogs) => {
@@ -31,8 +32,6 @@ const mostBlogs = (blogs) => {
 };
 
 const mostLikes = (blogs) => {
-  // need to convert byLikes to a single author with most likes
-
   byLikes = _(blogs)
     .groupBy("author")
     .map((objs, author) => ({
@@ -41,9 +40,11 @@ const mostLikes = (blogs) => {
     }))
     .value();
 
-  console.log(byLikes);
+  const authorWithMostLikes = byLikes.reduce((max, blogger) =>
+    max.likes > blogger.likes ? max : blogger
+  );
 
-  return -1;
+  return authorWithMostLikes;
 };
 
 module.exports = {
