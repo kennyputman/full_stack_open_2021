@@ -6,19 +6,26 @@ const app = require("../app");
 const api = supertest(app);
 const Blog = require("../models/blog");
 
-// beforeEach(async() => {
-//   await Blog.deleteMany({})
-//   console.log('Test DB Cleared')
+beforeEach(async () => {
+  await Blog.deleteMany({});
+  console.log("Test DB Cleared");
 
-//   let blogObject = new Blog(initialBlogs[0])
-//   await
-// })
+  for (let blog of helper.initialBlogs) {
+    let blogObject = new Blog(blog);
+    await blogObject.save();
+  }
+});
 
-test("notes are returned as json", async () => {
+test("blogs are returned as json", async () => {
   await api
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
+});
+
+test("correct number of blogs are returned", async () => {
+  const response = await api.get("/api/blogs");
+  expect(response.body.length).toBe(helper.initialBlogs.length);
 });
 
 afterAll(() => {
