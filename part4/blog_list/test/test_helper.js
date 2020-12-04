@@ -61,6 +61,11 @@ const newBlog = {
   url: "https://reactpatterns.https://www.jstor.org/stable/1803924?seq=1/",
 };
 
+const badBlog = {
+  author: "Edward Leamer",
+  likes: 4,
+};
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map((blog) => blog.toJSON());
@@ -70,4 +75,5 @@ module.exports = {
   initialBlogs,
   blogsInDb,
   newBlog,
+  badBlog,
 };

@@ -37,7 +37,7 @@ test("POST request creates a new blog post'", async () => {
   await api
     .post("/api/blogs")
     .send(helper.newBlog)
-    .expect(201)
+    .expect(200)
     .expect("Content-Type", /application\/json/);
 
   const blogsAfterPost = await helper.blogsInDb();
@@ -49,11 +49,11 @@ test("POST request creates a new blog post'", async () => {
   expect(contents).toContain("Edward Leamer");
 });
 
-test("missing likes property from request defaults to 0'", async () => {
+test("missing likes property from request defaults to 0", async () => {
   await api
     .post("/api/blogs")
     .send(helper.newBlog)
-    .expect(201)
+    .expect(200)
     .expect("Content-Type", /application\/json/);
 
   const blogsAfterPost = await helper.blogsInDb();
@@ -62,6 +62,10 @@ test("missing likes property from request defaults to 0'", async () => {
   //checks to see if blog is added and correct
   const contents = blogsAfterPost.map((n) => n.likes);
   expect(contents).toContain(0);
+});
+
+test("blog with missing data responds with status code 400 bad request", async () => {
+  await api.post("/api/blogs").send(helper.badBlog).expect(400);
 });
 
 afterAll(() => {
