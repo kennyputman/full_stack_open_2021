@@ -28,6 +28,11 @@ test("correct number of blogs are returned", async () => {
   expect(response.body.length).toBe(helper.initialBlogs.length);
 });
 
+test("unique identifier is 'id'", async () => {
+  const response = await api.get("/api/blogs");
+  expect(response.body[0]).toBeDefined();
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
