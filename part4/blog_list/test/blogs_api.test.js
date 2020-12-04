@@ -34,16 +34,9 @@ test("unique identifier is 'id'", async () => {
 });
 
 test("POST request creates a new blog post'", async () => {
-  const newBlog = {
-    title: "Taking the con out of econometrics",
-    author: "Edward Leamer",
-    url: "https://reactpatterns.https://www.jstor.org/stable/1803924?seq=1/",
-    likes: 1,
-  };
-
   await api
     .post("/api/blogs")
-    .send(newBlog)
+    .send(helper.newBlog)
     .expect(201)
     .expect("Content-Type", /application\/json/);
 
@@ -54,6 +47,21 @@ test("POST request creates a new blog post'", async () => {
   //checks to see if blog is added and correct
   const contents = blogsAfterPost.map((n) => n.author);
   expect(contents).toContain("Edward Leamer");
+});
+
+test("missing likes property from request defaults to 0'", async () => {
+  await api
+    .post("/api/blogs")
+    .send(helper.newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAfterPost = await helper.blogsInDb();
+  //check to see if a blog is added
+
+  //checks to see if blog is added and correct
+  const contents = blogsAfterPost.map((n) => n.likes);
+  expect(contents).toContain(0);
 });
 
 afterAll(() => {

@@ -41,7 +41,7 @@ const initialBlogs = [
     author: "Robert C. Martin",
     url:
       "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-    likes: 0,
+    likes: 1,
     __v: 0,
   },
   {
@@ -54,6 +54,13 @@ const initialBlogs = [
   },
 ];
 
+// New blog with likes missing. Should default to 0.
+const newBlog = {
+  title: "Taking the con out of econometrics",
+  author: "Edward Leamer",
+  url: "https://reactpatterns.https://www.jstor.org/stable/1803924?seq=1/",
+};
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map((blog) => blog.toJSON());
@@ -62,4 +69,5 @@ const blogsInDb = async () => {
 module.exports = {
   initialBlogs,
   blogsInDb,
+  newBlog,
 };

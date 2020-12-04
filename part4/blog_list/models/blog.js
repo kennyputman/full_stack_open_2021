@@ -16,7 +16,7 @@ const blogSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  likes: Number,
+  likes: { type: Number, default: 0 },
   date: Date,
 });
 
