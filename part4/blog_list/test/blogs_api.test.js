@@ -16,56 +16,60 @@ beforeEach(async () => {
   }
 });
 
-test("blogs are returned as json", async () => {
-  await api
-    .get("/api/blogs")
-    .expect(200)
-    .expect("Content-Type", /application\/json/);
+describe("when initially some notes are saved", () => {
+  test("blogs are returned as json", async () => {
+    await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+  });
+
+  test("correct number of blogs are returned", async () => {
+    const response = await api.get("/api/blogs");
+    expect(response.body.length).toBe(helper.initialBlogs.length);
+  });
+
+  test("unique identifier is 'id'", async () => {
+    const response = await api.get("/api/blogs");
+    expect(response.body[0]).toBeDefined();
+  });
 });
 
-test("correct number of blogs are returned", async () => {
-  const response = await api.get("/api/blogs");
-  expect(response.body.length).toBe(helper.initialBlogs.length);
-});
+describe("when a new blog post is created", () => {
+  test("POST request creates a new blog post'", async () => {
+    await api
+      .post("/api/blogs")
+      .send(helper.newBlog)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
 
-test("unique identifier is 'id'", async () => {
-  const response = await api.get("/api/blogs");
-  expect(response.body[0]).toBeDefined();
-});
+    const blogsAfterPost = await helper.blogsInDb();
+    //check to see if a blog is added
+    expect(blogsAfterPost.length).toBe(helper.initialBlogs.length + 1);
 
-test("POST request creates a new blog post'", async () => {
-  await api
-    .post("/api/blogs")
-    .send(helper.newBlog)
-    .expect(200)
-    .expect("Content-Type", /application\/json/);
+    //checks to see if blog is added and correct
+    const contents = blogsAfterPost.map((n) => n.author);
+    expect(contents).toContain("Edward Leamer");
+  });
 
-  const blogsAfterPost = await helper.blogsInDb();
-  //check to see if a blog is added
-  expect(blogsAfterPost.length).toBe(helper.initialBlogs.length + 1);
+  test("missing likes property from request defaults to 0", async () => {
+    await api
+      .post("/api/blogs")
+      .send(helper.newBlog)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
 
-  //checks to see if blog is added and correct
-  const contents = blogsAfterPost.map((n) => n.author);
-  expect(contents).toContain("Edward Leamer");
-});
+    const blogsAfterPost = await helper.blogsInDb();
+    //check to see if a blog is added
 
-test("missing likes property from request defaults to 0", async () => {
-  await api
-    .post("/api/blogs")
-    .send(helper.newBlog)
-    .expect(200)
-    .expect("Content-Type", /application\/json/);
+    //checks to see if blog is added and correct
+    const contents = blogsAfterPost.map((n) => n.likes);
+    expect(contents).toContain(0);
+  });
 
-  const blogsAfterPost = await helper.blogsInDb();
-  //check to see if a blog is added
-
-  //checks to see if blog is added and correct
-  const contents = blogsAfterPost.map((n) => n.likes);
-  expect(contents).toContain(0);
-});
-
-test("blog with missing data responds with status code 400 bad request", async () => {
-  await api.post("/api/blogs").send(helper.badBlog).expect(400);
+  test("blog with missing data responds with status code 400 bad request", async () => {
+    await api.post("/api/blogs").send(helper.badBlog).expect(400);
+  });
 });
 
 afterAll(() => {
