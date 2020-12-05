@@ -5,7 +5,7 @@ const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 const Blog = require("../models/blog");
-const { initialBlogs } = require("./test_helper.js");
+const { initialBlogs, blogWithMoreLikes } = require("./test_helper.js");
 
 beforeEach(async () => {
   await Blog.deleteMany({});
@@ -99,6 +99,19 @@ describe("When a blog post is updated", () => {
     const blogsAfterUdpate = await helper.blogsInDb();
 
     expect(blogsAfterUdpate.length).toBe(helper.initialBlogs.length);
+  });
+  test("updating blog post updates correct information", async () => {
+    await api
+      .put("/api/blogs/5a422b891b54a676234d17fa")
+      .send(helper.blogWithMoreLikes)
+      .expect(200);
+
+    const blogsAfterUdpate = await helper.blogsInDb();
+    const contents = blogsAfterUdpate.map((n) => n);
+
+    expect(blogsAfterUdpate).toEqual(
+      expect.arrayContaining([expect.objectContaining(blogWithMoreLikes)])
+    );
   });
 });
 
