@@ -72,6 +72,42 @@ describe("when a new blog post is created", () => {
   });
 });
 
+describe("When a blog post is deleted", () => {
+  test("deleting a blog posts reduces blogs by one'", async () => {
+    await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+
+    const blogsAfterDelete = await helper.blogsInDb();
+    console.log(blogsAfterDelete);
+    expect(blogsAfterDelete.length).toBe(helper.initialBlogs.length - 1);
+  });
+  test("deleting a blog posts removes correct blog post'", async () => {
+    await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+
+    const blogsAfterDelete = await helper.blogsInDb();
+
+    const contents = blogsAfterDelete.map((n) => n.author);
+    expect(contents).not.toContain("Michael Chan");
+  });
+});
+
+describe("When a blog post is updated", () => {
+  test("deleting a blog posts reduces blogs by one'", async () => {
+    await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+
+    const blogsAfterDelete = await helper.blogsInDb();
+    console.log(blogsAfterDelete);
+    expect(blogsAfterDelete.length).toBe(helper.initialBlogs.length - 1);
+  });
+  test("deleting a blog posts removes correct blog post'", async () => {
+    await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+
+    const blogsAfterDelete = await helper.blogsInDb();
+
+    const contents = blogsAfterDelete.map((n) => n.author);
+    expect(contents).not.toContain("Michael Chan");
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
