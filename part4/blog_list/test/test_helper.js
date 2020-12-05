@@ -66,6 +66,13 @@ const badBlog = {
   likes: 4,
 };
 
+const blogWithMoreLikes = {
+  title: "First class tests",
+  author: "Robert C. Martin",
+  url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+  likes: 20,
+};
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map((blog) => blog.toJSON());
@@ -76,4 +83,5 @@ module.exports = {
   blogsInDb,
   newBlog,
   badBlog,
+  blogWithMoreLikes,
 };

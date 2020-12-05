@@ -77,7 +77,6 @@ describe("When a blog post is deleted", () => {
     await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
 
     const blogsAfterDelete = await helper.blogsInDb();
-    console.log(blogsAfterDelete);
     expect(blogsAfterDelete.length).toBe(helper.initialBlogs.length - 1);
   });
   test("deleting a blog posts removes correct blog post'", async () => {
@@ -91,20 +90,15 @@ describe("When a blog post is deleted", () => {
 });
 
 describe("When a blog post is updated", () => {
-  test("deleting a blog posts reduces blogs by one'", async () => {
-    await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+  test("updating blog post maintains number of blogs'", async () => {
+    await api
+      .put("/api/blogs/5a422b891b54a676234d17fa")
+      .send(helper.blogWithMoreLikes)
+      .expect(200);
 
-    const blogsAfterDelete = await helper.blogsInDb();
-    console.log(blogsAfterDelete);
-    expect(blogsAfterDelete.length).toBe(helper.initialBlogs.length - 1);
-  });
-  test("deleting a blog posts removes correct blog post'", async () => {
-    await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+    const blogsAfterUdpate = await helper.blogsInDb();
 
-    const blogsAfterDelete = await helper.blogsInDb();
-
-    const contents = blogsAfterDelete.map((n) => n.author);
-    expect(contents).not.toContain("Michael Chan");
+    expect(blogsAfterUdpate.length).toBe(helper.initialBlogs.length);
   });
 });
 
