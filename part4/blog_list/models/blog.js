@@ -18,6 +18,10 @@ const blogSchema = new mongoose.Schema({
   },
   likes: { type: Number, default: 0 },
   date: { type: Date, default: Date.now },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 blogSchema.set("toJSON", {
