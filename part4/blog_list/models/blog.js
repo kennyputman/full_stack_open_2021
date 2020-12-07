@@ -17,7 +17,7 @@ const blogSchema = new mongoose.Schema({
     minlength: 3,
   },
   likes: { type: Number, default: 0 },
-  date: Date,
+  date: { type: Date, default: Date.now },
 });
 
 blogSchema.set("toJSON", {
