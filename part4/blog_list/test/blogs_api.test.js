@@ -130,7 +130,11 @@ describe("api/user test", () => {
       await User.deleteMany({});
 
       const passwordHash = await bcrypt.hash("sekret", 10);
-      const user = new User({ username: "root", passwordHash });
+      const user = new User({
+        username: "root",
+        name: "Superuser",
+        passwordHash,
+      });
 
       await user.save();
     });
