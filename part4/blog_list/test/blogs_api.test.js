@@ -7,13 +7,25 @@ const api = supertest(app);
 const bcrypt = require("bcrypt");
 const Blog = require("../models/blog");
 const User = require("../models/user");
-
-// ******* Tests for Blog Posts ******** //
+const { initialBlogs, blogsInDb } = require("./test_helper.js");
 
 describe("api/blog tests", () => {
   beforeEach(async () => {
-    await Blog.deleteMany({});
+    // create test database user
+    await User.deleteMany({});
+    const testUser = {
+      username: "testUser",
+      name: "Test User",
+      password: "sekret",
+    };
 
+    await api.post("/api/users").send(testUser);
+
+    const response = await api.post("/api/login").send(testUser);
+    token = response.body.token;
+
+    // populate test blogs list
+    await Blog.deleteMany({});
     for (let blog of helper.initialBlogs) {
       let blogObject = new Blog(blog);
       await blogObject.save();
@@ -39,11 +51,14 @@ describe("api/blog tests", () => {
     });
   });
 
+  // ________________ WHEN A BLOG POST IS CREATED_____________  //
+
   describe("when a new blog post is created", () => {
     test("POST request creates a new blog post'", async () => {
       await api
         .post("/api/blogs")
         .send(helper.newBlog)
+        .set("Authorization", `bearer ${token}`)
         .expect(200)
         .expect("Content-Type", /application\/json/);
 
@@ -60,6 +75,7 @@ describe("api/blog tests", () => {
       await api
         .post("/api/blogs")
         .send(helper.newBlog)
+        .set("Authorization", `bearer ${token}`)
         .expect(200)
         .expect("Content-Type", /application\/json/);
 
@@ -72,19 +88,54 @@ describe("api/blog tests", () => {
     });
 
     test("blog with missing data responds with status code 400 bad request", async () => {
-      await api.post("/api/blogs").send(helper.badBlog).expect(400);
+      await api
+        .post("/api/blogs")
+        .send(helper.badBlog)
+        .set("Authorization", `bearer ${token}`)
+        .expect(400);
     });
   });
 
+  // ______________ WHEN A BLOG POST IS DELETED __________ //
+
   describe("When a blog post is deleted", () => {
+    beforeEach(async () => {
+      await Blog.deleteMany({});
+
+      await api
+        .post("/api/blogs")
+        .send(helper.authorizedBlogs[0])
+        .set("Authorization", `bearer ${token}`)
+        .expect(200)
+        .expect("Content-Type", /application\/json/);
+
+      await api
+        .post("/api/blogs")
+        .send(helper.authorizedBlogs[1])
+        .set("Authorization", `bearer ${token}`)
+        .expect(200)
+        .expect("Content-Type", /application\/json/);
+    });
+
     test("deleting a blog posts reduces blogs by one'", async () => {
-      await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+      const blogsBeforeDelete = await helper.blogsInDb();
+      blogId = blogsBeforeDelete[0].id;
+      await api
+        .delete(`/api/blogs/${blogId}`)
+        .set("Authorization", `bearer ${token}`)
+        .expect(204);
 
       const blogsAfterDelete = await helper.blogsInDb();
-      expect(blogsAfterDelete.length).toBe(helper.initialBlogs.length - 1);
+      expect(blogsAfterDelete.length).toBe(1);
     });
+
     test("deleting a blog posts removes correct blog post'", async () => {
-      await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204);
+      const blogsBeforeDelete = await helper.blogsInDb();
+      blogId = blogsBeforeDelete[1].id;
+      await api
+        .delete(`/api/blogs/${blogId}`)
+        .set("Authorization", `bearer ${token}`)
+        .expect(204);
 
       const blogsAfterDelete = await helper.blogsInDb();
 
@@ -93,11 +144,14 @@ describe("api/blog tests", () => {
     });
   });
 
+  // ______________ WHEN A BLOG POST IS UPDATED _________________ //
+
   describe("When a blog post is updated", () => {
     test("updating blog post maintains number of blogs'", async () => {
       await api
         .put("/api/blogs/5a422b891b54a676234d17fa")
         .send(helper.blogWithMoreLikes)
+        .set("Authorization", `bearer ${token}`)
         .expect(200);
 
       const blogsAfterUdpate = await helper.blogsInDb();
