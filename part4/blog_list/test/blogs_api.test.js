@@ -94,6 +94,10 @@ describe("api/blog tests", () => {
         .set("Authorization", `bearer ${token}`)
         .expect(400);
     });
+
+    test("blog fails with proper status code if token not provided", async () => {
+      await api.post("/api/blogs").send(helper.badBlog).expect(401);
+    });
   });
 
   // ______________ WHEN A BLOG POST IS DELETED __________ //
