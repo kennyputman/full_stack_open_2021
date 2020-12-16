@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [user, setUser] = useState(null);
+  const [opsMessage, setOpsMessage] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -42,7 +44,10 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      console.log(`Error: ${exception}`);
+      setOpsMessage(`Wrong username or password`);
+      setTimeout(() => {
+        setOpsMessage(null);
+      }, 5000);
     }
   };
 
@@ -63,12 +68,19 @@ const App = () => {
 
       blogService.create(blogObject).then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
+        setOpsMessage(`${author} added a new blog: ${title}`);
+        setTimeout(() => {
+          setOpsMessage(null);
+        }, 5000);
         setAuthor("");
-        setAuthor("");
+        setTitle("");
         setUrl("");
       });
     } catch (exception) {
-      console.log(`Error: ${exception}`);
+      setOpsMessage("Blog could not be added");
+      setTimeout(() => {
+        setOpsMessage(null);
+      }, 5000);
     }
   };
 
@@ -133,6 +145,9 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <div>
+          <Notification message={opsMessage} />
+        </div>
         {loginForm()}
       </div>
     );
@@ -148,7 +163,9 @@ const App = () => {
           <button onClick={handleLogout}>logout</button>
         </span>
       </p>
-
+      <div>
+        <Notification message={opsMessage} />
+      </div>
       <h2> Create New</h2>
       {blogForm()}
 
