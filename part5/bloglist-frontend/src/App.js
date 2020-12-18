@@ -3,6 +3,7 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
+import login from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -141,31 +142,26 @@ const App = () => {
     </form>
   );
 
-  if (user === null) {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <div>
-          <Notification message={opsMessage} />
-        </div>
-        {loginForm()}
-      </div>
-    );
-  }
-
   return (
-    <div>
+    <div class="main">
       <h2>Blogs</h2>
-
-      <p>
-        {user.name} logged in
-        <span>
-          <button onClick={handleLogout}>logout</button>
-        </span>
-      </p>
       <div>
         <Notification message={opsMessage} />
       </div>
+
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <p>
+            {user.name} logged in
+            <span>
+              <button onClick={handleLogout}>logout</button>
+            </span>
+          </p>
+        </div>
+      )}
+
       <h2> Create New</h2>
       {blogForm()}
 
