@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
-import Blog from "./components/Blog";
+import React, { useState, useEffect, useRef } from "react";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
-import login from "./services/login";
+import Blog from "./components/Blog";
+import LoginForm from "./components/Login";
+import "./App.css";
+import Togglable from "./components/Togglable";
+import BlogForm from "./components/BlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,6 +17,8 @@ const App = () => {
   const [url, setUrl] = useState("");
   const [user, setUser] = useState(null);
   const [opsMessage, setOpsMessage] = useState("");
+  const [loginVisible, setLoginVisible] = useState(false);
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -66,7 +71,7 @@ const App = () => {
         author: author,
         url: url,
       };
-
+      blogFormRef.current.toggleVisibility();
       blogService.create(blogObject).then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
         setOpsMessage(`${author} added a new blog: ${title}`);
@@ -85,70 +90,50 @@ const App = () => {
     }
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+  const blogForm = () => (
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <BlogForm
+        handleAddBlog={handleAddBlog}
+        title={title}
+        author={author}
+        url={url}
+        setTitle={({ target }) => setTitle(target.value)}
+        setAuthor={({ target }) => setAuthor(target.value)}
+        setUrl={({ target }) => setUrl(target.value)}
+      />
+    </Togglable>
   );
 
-  const blogForm = () => (
-    <form onSubmit={handleAddBlog}>
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? "none" : "" };
+    const showWhenVisible = { display: loginVisible ? "" : "none" };
+
+    return (
       <div>
-        title:
-        <input
-          type="text"
-          name="title"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        ></input>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>login</button>
+        </div>
+
+        <div style={showWhenVisible}>
+          <LoginForm
+            username={username}
+            password={password}
+            setPassword={({ target }) => setPassword(target.value)}
+            setUsername={({ target }) => setUsername(target.value)}
+            handleLogin={handleLogin}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
       </div>
-      <div>
-        author:
-        <input
-          type="text"
-          name="author"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        ></input>
-      </div>
-      <div>
-        url:
-        <input
-          type="text"
-          name="url"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        ></input>
-      </div>
-      <button type="submit">create</button>
-    </form>
-  );
+    );
+  };
 
   return (
     <div class="main">
       <h2>Blogs</h2>
-      <div>
+      <div class="notification">
         <Notification message={opsMessage} />
       </div>
-
       {user === null ? (
         loginForm()
       ) : (
@@ -162,7 +147,6 @@ const App = () => {
         </div>
       )}
 
-      <h2> Create New</h2>
       {blogForm()}
 
       {blogs.map((blog) => (
