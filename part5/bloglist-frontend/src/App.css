@@ -3,6 +3,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.main {
+  margin-bottom: 100px;
+}
+
 .notification {
   border: 2px, black, solid;
 }
@@ -25,7 +29,7 @@
 .blog {
   margin: 10px;
   padding: 15px;
-  border-radius: 3px;
+  border-radius: 5px;
   background-color: white;
   max-width: 800px;
 }
