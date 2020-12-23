@@ -46,15 +46,23 @@ const Blog = ({ blog }) => {
   const increaseLikes = () => setLikes(likes + 1);
 
   return (
-    <div class="blog">
+    <div className="blog">
       {blog.title} {blog.author}
-      <button onClick={toggleVisibility} class="btn" style={hideWhenVisible}>
+      <button
+        onClick={toggleVisibility}
+        className="btn"
+        style={hideWhenVisible}
+      >
         view
       </button>
-      <button onClick={toggleVisibility} class="btn" style={showWhenVisible}>
+      <button
+        onClick={toggleVisibility}
+        className="btn"
+        style={showWhenVisible}
+      >
         hide
       </button>
-      <div style={showWhenVisible} class="extraInfo">
+      <div style={showWhenVisible} className="extraInfo">
         {blog.url}
         <br></br>
         Likes: {likes}
@@ -64,7 +72,7 @@ const Blog = ({ blog }) => {
             handleAddLike(event);
             increaseLikes();
           }}
-          class="btn"
+          className="btn"
         >
           like
         </button>
@@ -75,7 +83,7 @@ const Blog = ({ blog }) => {
           onClick={(event) => {
             handleDeleteBlog(event);
           }}
-          class="btn"
+          className="btn"
         >
           delete
         </button>

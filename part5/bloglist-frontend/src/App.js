@@ -111,7 +111,7 @@ const App = () => {
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)} class="btn">
+          <button onClick={() => setLoginVisible(true)} className="btn">
             login
           </button>
         </div>
@@ -124,7 +124,7 @@ const App = () => {
             setUsername={({ target }) => setUsername(target.value)}
             handleLogin={handleLogin}
           />
-          <button onClick={() => setLoginVisible(false)} class="btn">
+          <button onClick={() => setLoginVisible(false)} className="btn">
             cancel
           </button>
         </div>
@@ -133,9 +133,9 @@ const App = () => {
   };
 
   return (
-    <div class="main">
+    <div className="main">
       <h2>Blogs</h2>
-      <div class="notification">
+      <div className="notification">
         <Notification message={opsMessage} />
       </div>
       {user === null ? (
@@ -145,7 +145,7 @@ const App = () => {
           <p>
             {user.name} logged in
             <span>
-              <button onClick={handleLogout} class="btn">
+              <button onClick={handleLogout} className="btn">
                 logout
               </button>
             </span>
