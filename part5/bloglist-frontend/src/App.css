@@ -35,6 +35,14 @@
   display: block;
 }
 
+.blogHeader {
+  background-color: white;
+}
+
+.toggleVisibility {
+  background-color: white;
+}
+
 .extraInfo {
   padding: 1px 5px;
   background-color: white;
