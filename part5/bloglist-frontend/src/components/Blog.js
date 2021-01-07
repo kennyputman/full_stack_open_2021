@@ -24,6 +24,7 @@ const Blog = ({ blog }) => {
       };
 
       blogService.change(blogObject, blog.id);
+      setLikes(likes + 1);
     } catch (exception) {
       console.log(`Like button failed: ${exception}`);
     }
@@ -42,8 +43,6 @@ const Blog = ({ blog }) => {
       console.log(`blog delete button failed: ${exception}`);
     }
   };
-
-  const increaseLikes = () => setLikes(likes + 1);
 
   return (
     <div className="blog">
@@ -75,9 +74,7 @@ const Blog = ({ blog }) => {
         Likes: {likes}
         <button
           onClick={(event) => {
-            console.log("hello");
             handleAddLike(event);
-            increaseLikes();
           }}
           className="btn"
         >

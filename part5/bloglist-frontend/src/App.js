@@ -3,6 +3,7 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Blog from "./components/Blog";
+import Blogs from "./components/Blogs";
 import LoginForm from "./components/Login";
 import "./App.css";
 import Togglable from "./components/Togglable";
@@ -155,11 +156,7 @@ const App = () => {
 
       {blogForm()}
 
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog key={blog.id} blog={blog}></Blog>
-        ))}
+      <Blogs blogs={blogs}></Blogs>
     </div>
   );
 };
