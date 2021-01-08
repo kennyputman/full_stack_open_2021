@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import blogService from "../services/blogs";
-const Blog = ({ blog }) => {
+
+const Blog = ({ blog, handleDeleteBlog }) => {
   const [visible, setVisible] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
 
@@ -27,20 +28,6 @@ const Blog = ({ blog }) => {
       setLikes(likes + 1);
     } catch (exception) {
       console.log(`Like button failed: ${exception}`);
-    }
-  };
-
-  const handleDeleteBlog = async (event) => {
-    event.preventDefault();
-    console.log("deleting", blog.id);
-
-    try {
-      const result = window.confirm(`Remove blog ${blog.title}`);
-      if (result) {
-        blogService.remove(blog.id);
-      }
-    } catch (exception) {
-      console.log(`blog delete button failed: ${exception}`);
     }
   };
 
@@ -83,12 +70,7 @@ const Blog = ({ blog }) => {
         <br></br>
         {blog.user.username}
         <br></br>
-        <button
-          onClick={(event) => {
-            handleDeleteBlog(event);
-          }}
-          className="btn"
-        >
+        <button onClick={() => handleDeleteBlog(blog)} className="btn">
           delete
         </button>
       </div>

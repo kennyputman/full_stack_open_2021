@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
-import Blog from "./components/Blog";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/Login";
 import "./App.css";
@@ -91,6 +90,18 @@ const App = () => {
     }
   };
 
+  const handleDeleteBlog = async (targetBlog) => {
+    try {
+      const result = window.confirm(`Remove blog ${targetBlog}`);
+      if (result) {
+        await blogService.remove(targetBlog.id);
+        setBlogs(blogs.filter((blog) => blog.id !== targetBlog.id));
+      }
+    } catch (exception) {
+      console.log(`blog delete button failed: ${exception}`);
+    }
+  };
+
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
       <BlogForm
@@ -156,7 +167,7 @@ const App = () => {
 
       {blogForm()}
 
-      <Blogs blogs={blogs}></Blogs>
+      <Blogs blogs={blogs} handleDeleteBlog={handleDeleteBlog}></Blogs>
     </div>
   );
 };
