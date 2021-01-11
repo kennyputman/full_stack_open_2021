@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import blogService from "../services/blogs";
 
-const Blog = ({ blog, handleDeleteBlog }) => {
+const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
   const [visible, setVisible] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
 
@@ -10,25 +9,6 @@ const Blog = ({ blog, handleDeleteBlog }) => {
 
   const toggleVisibility = () => {
     setVisible(!visible);
-  };
-
-  const handleAddLike = async (event) => {
-    event.preventDefault();
-    console.log("liking", blog.id);
-    try {
-      const blogObject = {
-        user: blog.user.id,
-        likes: likes + 1,
-        author: blog.author,
-        title: blog.title,
-        url: blog.url,
-      };
-
-      blogService.change(blogObject, blog.id);
-      setLikes(likes + 1);
-    } catch (exception) {
-      console.log(`Like button failed: ${exception}`);
-    }
   };
 
   return (
@@ -60,10 +40,11 @@ const Blog = ({ blog, handleDeleteBlog }) => {
         <br></br>
         Likes: {likes}
         <button
-          onClick={(event) => {
-            handleAddLike(event);
+          onClick={() => {
+            handleAddLike(blog, likes);
+            setLikes(likes + 1);
           }}
-          className="btn"
+          className="btn like"
         >
           like
         </button>

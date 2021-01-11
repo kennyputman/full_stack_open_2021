@@ -64,9 +64,10 @@ const App = () => {
 
   const handleAddBlog = (event) => {
     event.preventDefault();
-    console.log("adding blog with", title, author, url);
+    console.log("adding blog with", title, author, url, user);
     try {
       const blogObject = {
+        user: user,
         title: title,
         author: author,
         url: url,
@@ -99,6 +100,23 @@ const App = () => {
       }
     } catch (exception) {
       console.log(`blog delete button failed: ${exception}`);
+    }
+  };
+
+  const handleAddLike = async (targetBlog, likes) => {
+    console.log("liking", targetBlog.title);
+    try {
+      const blogObject = {
+        user: targetBlog.user,
+        likes: likes + 1,
+        author: targetBlog.author,
+        title: targetBlog.title,
+        url: targetBlog.url,
+      };
+
+      blogService.change(blogObject, targetBlog.id);
+    } catch (exception) {
+      console.log(`Like button failed: ${exception}`);
     }
   };
 
@@ -167,7 +185,11 @@ const App = () => {
 
       {blogForm()}
 
-      <Blogs blogs={blogs} handleDeleteBlog={handleDeleteBlog}></Blogs>
+      <Blogs
+        blogs={blogs}
+        handleDeleteBlog={handleDeleteBlog}
+        handleAddLike={handleAddLike}
+      ></Blogs>
     </div>
   );
 };
