@@ -4,6 +4,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { prettyDOM } from "@testing-library/dom";
 import Blog from "./Blog";
 
+const mockHandler = jest.fn();
 let component;
 beforeEach(() => {
   const blog = {
@@ -13,7 +14,7 @@ beforeEach(() => {
     title: "JS Engine Visualzied",
     url: "dev.to/lydiahallie/jsenginevisualized",
   };
-  component = render(<Blog blog={blog} />);
+  component = render(<Blog blog={blog} handleAddLike={mockHandler} />);
 });
 
 describe("Blog renders Title and Author only", () => {
@@ -41,7 +42,7 @@ describe("Extra Info functionality Works", () => {
 
     const extraInfo = component.container.querySelector(".extraInfo");
     // console.log(prettyDOM(extraInfo));
-    expect(extraInfo).toHaveStyle("");
+    expect(extraInfo).not.toHaveStyle("display:none");
   });
 
   test("Clicking hide button hides extra info", () => {
@@ -52,5 +53,15 @@ describe("Extra Info functionality Works", () => {
     fireEvent.click(hide);
 
     expect(extraInfo).toHaveStyle("display: none");
+  });
+  test("Clicking like button twice calls event handler twice", () => {
+    const extraInfo = component.container.querySelector(".extraInfo");
+
+    console.log(prettyDOM(extraInfo));
+    const likeButton = component.getByText("like");
+    fireEvent.click(likeButton);
+    fireEvent.click(likeButton);
+
+    expect(mockHandler.mock.calls).toHaveLength(2);
   });
 });
