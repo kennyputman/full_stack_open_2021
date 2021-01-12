@@ -1,42 +1,39 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/react";
-import { prettyDOM } from "@testing-library/dom";
+// import { prettyDOM } from "@testing-library/dom";
 import Blog from "./Blog";
+import BlogForm from "./BlogForm";
 
-const mockHandler = jest.fn();
-let component;
-beforeEach(() => {
-  const blog = {
-    user: { username: "Hellas" },
-    likes: 532,
-    author: "Lydia Hallie",
-    title: "JS Engine Visualzied",
-    url: "dev.to/lydiahallie/jsenginevisualized",
-  };
-  component = render(<Blog blog={blog} handleAddLike={mockHandler} />);
-});
+describe("Blog Component", () => {
+  const mockHandler = jest.fn();
+  let component;
+  beforeEach(() => {
+    const blog = {
+      user: { username: "Hellas" },
+      likes: 532,
+      author: "John Smith",
+      title: "Testing React",
+      url: "dev.to/johnsmith/testingreact",
+    };
+    component = render(<Blog blog={blog} handleAddLike={mockHandler} />);
+  });
 
-describe("Blog renders Title and Author only", () => {
-  test("Blog renders Title and Author", () => {
+  test("renders Title and Author", () => {
     const blogHeader = component.container.querySelector(".blogHeader");
 
     // console.log(prettyDOM(blogHeader));
 
-    expect(blogHeader).toHaveTextContent(
-      "JS Engine Visualzied: by Lydia Hallie"
-    );
+    expect(blogHeader).toHaveTextContent("Testing React: by John Smith");
   });
 
-  test("extra info is hidden by default", () => {
+  test("hides extra info by default", () => {
     const extraInfo = component.container.querySelector(".extraInfo");
 
     expect(extraInfo).toHaveStyle("display: none");
   });
-});
 
-describe("Extra Info functionality Works", () => {
-  test("Clicking view button displays URL & Likes", () => {
+  test("displays URL & Likes when view button is clicked", () => {
     const button = component.getByText("view");
     fireEvent.click(button);
 
@@ -45,7 +42,7 @@ describe("Extra Info functionality Works", () => {
     expect(extraInfo).not.toHaveStyle("display:none");
   });
 
-  test("Clicking hide button hides extra info", () => {
+  test("hides extra info when hide button is clicked", () => {
     const extraInfo = component.container.querySelector(".extraInfo");
     const view = component.getByText("view");
     const hide = component.getByText("hide");
@@ -54,14 +51,67 @@ describe("Extra Info functionality Works", () => {
 
     expect(extraInfo).toHaveStyle("display: none");
   });
-  test("Clicking like button twice calls event handler twice", () => {
-    const extraInfo = component.container.querySelector(".extraInfo");
-
-    console.log(prettyDOM(extraInfo));
+  test("calls event handler twice when like button is clicked twice", () => {
+    // const extraInfo = component.container.querySelector(".extraInfo");
+    // console.log(prettyDOM(extraInfo));
     const likeButton = component.getByText("like");
     fireEvent.click(likeButton);
     fireEvent.click(likeButton);
 
     expect(mockHandler.mock.calls).toHaveLength(2);
+  });
+});
+
+describe("New Blog Form", () => {
+  const mockAddBlogHandler = jest.fn();
+  const mockSetTitle = jest.fn();
+  const mockSetAuthor = jest.fn();
+  const mockSetUrl = jest.fn();
+
+  let component;
+  beforeEach(() => {
+    const newBlog = {
+      title: "Testing React",
+      author: "John Smith",
+      url: "dev.to/johnsmith/testingreact",
+    };
+    component = render(
+      <BlogForm
+        title={newBlog.title}
+        author={newBlog.author}
+        url={newBlog.url}
+        handleAddBlog={mockAddBlogHandler}
+        setTitle={({ target }) => mockSetTitle(target.value)}
+        setAuthor={({ target }) => mockSetAuthor(target.value)}
+        setUrl={({ target }) => mockSetUrl(target.value)}
+      />
+    );
+  });
+
+  test("submit event handler functions correctly", () => {
+    const submit = component.container.querySelector("#submitBlog");
+
+    fireEvent.click(submit);
+
+    expect(mockAddBlogHandler.mock.calls).toHaveLength(1);
+  });
+
+  test("has correct form values", () => {
+    const newBlog = {
+      title: "Testing React",
+      author: "John Smith",
+      url: "dev.to/johnsmith/testingreact",
+    };
+    const formAuthor = component.container.querySelector("#author");
+    const formTitle = component.container.querySelector("#title");
+    const formUrl = component.container.querySelector("#url");
+
+    const formValues = {
+      title: formTitle.value,
+      author: formAuthor.value,
+      url: formUrl.value,
+    };
+
+    expect(formValues).toEqual(newBlog);
   });
 });
