@@ -75,7 +75,7 @@ const App = () => {
       blogFormRef.current.toggleVisibility();
       blogService.create(blogObject).then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
-        setOpsMessage(`${author} added a new blog: ${title}`);
+        setOpsMessage(`${user.username} added a new blog: ${title}`);
         setTimeout(() => {
           setOpsMessage(null);
         }, 5000);

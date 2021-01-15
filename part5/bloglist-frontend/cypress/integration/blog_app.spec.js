@@ -32,6 +32,38 @@ describe("Blog App", function () {
       cy.get(".error")
         .should("contain", "Wrong username or password")
         .and("have.css", "color", "rgb(255, 0, 0)");
+
+      cy.get("html").should("not.contain", "shouldfaill logged in");
+    });
+  });
+  describe("When Logged in", function () {
+    beforeEach(function () {
+      cy.login({ username: "ronapptest", password: "mettaworldpeace" });
+    });
+
+    it("A blog can be created", function () {
+      cy.contains("new blog").click();
+      cy.get("#title").type("test blog1");
+      cy.get("#author").type("John Doe");
+      cy.get("#url").type("dev.to/testblog1");
+      cy.contains("create").click();
+      cy.contains("ronapptest added a new blog: test blog1");
+      cy.contains("test blog1: by John Doe");
+    });
+
+    it("Another blog can be created", function () {
+      cy.createBlog({
+        title: "test blog1",
+        author: "John",
+        url: "dev.to/testblog1",
+      });
+      cy.createBlog({
+        title: "test blog2",
+        author: "Jane",
+        url: "dev.to/testblog2",
+      });
+      cy.contains("test blog1: by John");
+      cy.contains("test blog2: by Jane");
     });
   });
 });
