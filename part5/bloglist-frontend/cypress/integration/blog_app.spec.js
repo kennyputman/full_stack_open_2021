@@ -77,5 +77,38 @@ describe("Blog App", function () {
       cy.contains("like").click().click();
       cy.contains("Likes: 2");
     });
+
+    it("A user can delete a blog", function () {
+      cy.createBlog({
+        title: "test blog1",
+        author: "John",
+        url: "dev.to/testblog1",
+      });
+
+      cy.contains("view").click();
+      cy.contains("delete").click();
+      cy.should("not.contain", "test blog1");
+    });
+
+    it.only("A user cannot delete a blog that isn't theirs", function () {
+      cy.createBlog({
+        title: "test blog1",
+        author: "John",
+        url: "dev.to/testblog1",
+      });
+      cy.contains("logout").click();
+      cy.visit("http://localhost:3000");
+
+      cy.createUser({
+        name: "fake user",
+        username: "fakeuser",
+        password: "fakepassword",
+      });
+
+      cy.login({ username: "fakeuser", password: "fakepassword" });
+      cy.contains("view").click();
+      cy.contains("delete").click();
+      cy.contains("test blog1: by John");
+    });
   });
 });

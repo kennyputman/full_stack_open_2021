@@ -51,7 +51,7 @@ const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
         <br></br>
         {blog.user.username}
         <br></br>
-        <button onClick={() => handleDeleteBlog(blog)} className="btn">
+        <button onClick={() => handleDeleteBlog(blog)} className="btn delete">
           delete
         </button>
       </div>
