@@ -65,5 +65,17 @@ describe("Blog App", function () {
       cy.contains("test blog1: by John");
       cy.contains("test blog2: by Jane");
     });
+
+    it("A user can like a blog", function () {
+      cy.createBlog({
+        title: "test blog1",
+        author: "John",
+        url: "dev.to/testblog1",
+      });
+
+      cy.contains("view").click();
+      cy.contains("like").click().click();
+      cy.contains("Likes: 2");
+    });
   });
 });
