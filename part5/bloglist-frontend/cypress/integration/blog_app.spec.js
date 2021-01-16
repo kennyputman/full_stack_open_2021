@@ -90,7 +90,7 @@ describe("Blog App", function () {
       cy.should("not.contain", "test blog1");
     });
 
-    it.only("A user cannot delete a blog that isn't theirs", function () {
+    it("A user cannot delete a blog that isn't theirs", function () {
       cy.createBlog({
         title: "test blog1",
         author: "John",
@@ -109,6 +109,32 @@ describe("Blog App", function () {
       cy.contains("view").click();
       cy.contains("delete").click();
       cy.contains("test blog1: by John");
+    });
+
+    it("blogs are ordered by likes", function () {
+      cy.createBlog({
+        title: "test blog1",
+        author: "John",
+        url: "dev.to/testblog1",
+        likes: 5,
+      });
+      cy.createBlog({
+        title: "test blog2",
+        author: "Jane",
+        url: "dev.to/testblog2",
+      });
+      cy.createBlog({
+        title: "test blog3",
+        author: "Jim",
+        url: "dev.to/testblog3",
+        likes: 4,
+      });
+
+      cy.get(".blog").then((blogs) => {
+        cy.get(blogs).eq(0).contains("test blog1: by John");
+        cy.get(blogs).eq(1).contains("test blog3: by Jim");
+        cy.get(blogs).eq(2).contains("test blog2: by Jane");
+      });
     });
   });
 });
