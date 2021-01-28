@@ -8,22 +8,18 @@ const anecdotesAtStart = [
 ];
 
 const getId = () => (100000 * Math.random()).toFixed(0);
-const getRandomVotes = () => (100 * Math.random()).toFixed(0);
 
 const asObject = (anecdote) => {
   return {
     content: anecdote,
     id: getId(),
-    votes: getRandomVotes(),
+    votes: 0,
   };
 };
 
 const initialState = anecdotesAtStart.map(asObject);
 
-// actions:
-
 export const addVote = (id) => {
-  console.log(`adding vote for id ${id}`);
   return {
     type: "VOTE",
     data: { id },
