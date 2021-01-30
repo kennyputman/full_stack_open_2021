@@ -4,8 +4,14 @@ import { addVote } from "../reducers/anecdoteReducer";
 import { createMessage, removeMessage } from "../reducers/messageReducer";
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
   const dispatch = useDispatch();
+
+  const anecdotes = useSelector((state) => state.anecdotes);
+  const filter = useSelector((state) => state.filter);
+
+  const matches = anecdotes.filter((anecdote) => {
+    return anecdote.content.toLowerCase().includes(filter.toLowerCase());
+  });
 
   const messageService = (content) => {
     dispatch(createMessage(`You voted '${content}'`));
@@ -16,7 +22,7 @@ const AnecdoteList = () => {
 
   return (
     <div>
-      {anecdotes
+      {matches
         .sort((a, b) => b.votes - a.votes)
         .map((anecdote) => (
           <div key={anecdote.id}>

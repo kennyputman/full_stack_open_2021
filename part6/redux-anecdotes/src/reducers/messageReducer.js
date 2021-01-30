@@ -1,5 +1,3 @@
-import { useDispatch } from "redux";
-
 export const createMessage = (content) => {
   return {
     type: "CREATE_MESSAGE",
