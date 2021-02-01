@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addVote } from "../reducers/anecdoteReducer";
-import { createMessage, removeMessage } from "../reducers/messageReducer";
+import { setMessage } from "../reducers/messageReducer";
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
@@ -13,17 +13,9 @@ const AnecdoteList = () => {
     return anecdote.content.toLowerCase().includes(filter.toLowerCase());
   });
 
-  const messageService = (content) => {
-    dispatch(createMessage(`You voted '${content}'`));
-    setTimeout(() => {
-      dispatch(removeMessage());
-    }, 5000);
-  };
-
   const addVoteHandler = async (anecdote) => {
-    dispatch(removeMessage());
     dispatch(addVote(anecdote.id));
-    messageService(anecdote.content);
+    dispatch(setMessage(`You voted '${anecdote.content}'`, 5));
   };
 
   return (

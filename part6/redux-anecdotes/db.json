@@ -3,7 +3,7 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 13
+      "votes": 16
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
@@ -31,24 +31,9 @@
       "votes": 0
     },
     {
-      "content": "creating anecdotes works with json-server",
+      "content": "creating new anecdote gives correct message",
       "votes": 0,
-      "id": "I6I1f_Y"
-    },
-    {
-      "content": "creating anecdote with thunk works",
-      "votes": 0,
-      "id": "TMOsZ_Q"
-    },
-    {
-      "content": "dispatch for new anecdote works with thunk",
-      "votes": 9,
-      "id": "D_-Qwfc"
-    },
-    {
-      "content": "voting with thunk works",
-      "votes": 32,
-      "id": "TiPZR4p"
+      "id": "kAsrYcS"
     }
   ]
 }
