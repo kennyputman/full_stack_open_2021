@@ -3,7 +3,7 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 0
+      "votes": 13
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
@@ -42,8 +42,13 @@
     },
     {
       "content": "dispatch for new anecdote works with thunk",
-      "votes": 0,
+      "votes": 9,
       "id": "D_-Qwfc"
+    },
+    {
+      "content": "voting with thunk works",
+      "votes": 32,
+      "id": "TiPZR4p"
     }
   ]
 }

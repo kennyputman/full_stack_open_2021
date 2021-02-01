@@ -20,6 +20,12 @@ const AnecdoteList = () => {
     }, 5000);
   };
 
+  const addVoteHandler = async (anecdote) => {
+    dispatch(removeMessage());
+    dispatch(addVote(anecdote.id));
+    messageService(anecdote.content);
+  };
+
   return (
     <div>
       {matches
@@ -31,8 +37,7 @@ const AnecdoteList = () => {
               has {anecdote.votes}
               <button
                 onClick={() => {
-                  dispatch(addVote(anecdote.id));
-                  messageService(anecdote.content);
+                  addVoteHandler(anecdote);
                 }}
               >
                 vote
