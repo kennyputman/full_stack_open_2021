@@ -34,6 +34,16 @@
       "content": "creating anecdotes works with json-server",
       "votes": 0,
       "id": "I6I1f_Y"
+    },
+    {
+      "content": "creating anecdote with thunk works",
+      "votes": 0,
+      "id": "TMOsZ_Q"
+    },
+    {
+      "content": "dispatch for new anecdote works with thunk",
+      "votes": 0,
+      "id": "D_-Qwfc"
     }
   ]
 }
