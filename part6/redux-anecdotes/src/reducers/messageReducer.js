@@ -1,9 +1,15 @@
+let timeout = null;
+
 export const setMessage = (content, time) => {
   return async (dispatch) => {
-    console.log("called setMessage");
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
     dispatch({ type: "CREATE_MESSAGE", data: content });
-    await new Promise((r) => setTimeout(r, time * 1000));
-    dispatch({ type: "REMOVE_MESSAGE" });
+    timeout = setTimeout(() => {
+      dispatch({ type: "REMOVE_MESSAGE" });
+    }, time * 1000);
   };
 };
 const anecdoteReducer = (state = null, action) => {
