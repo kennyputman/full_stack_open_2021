@@ -14,7 +14,6 @@ const CreateNew = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(`submitted ${content}`)
         props.addNew({
             content: content.value,
             author: author.value,
@@ -22,6 +21,12 @@ const CreateNew = (props) => {
             votes: 0
         })
         history.push("/")
+    }
+
+    const handleReset = () => {
+        content.reset()
+        author.reset()
+        info.reset()
     }
 
     return (
@@ -42,6 +47,7 @@ const CreateNew = (props) => {
                 </div>
                 <button>create</button>
             </form>
+            <button onClick={() => handleReset()}>reset</button>
         </div>
     )
 
