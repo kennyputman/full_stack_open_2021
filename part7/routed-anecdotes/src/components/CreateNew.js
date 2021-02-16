@@ -6,11 +6,11 @@ import {
 import { useCreate } from "../hooks/index"
 
 const CreateNew = (props) => {
-    const content = useCreate('text')
-    const author = useCreate('text')
-    const info = useCreate('text')
-    const history = useHistory()
+    const { reset: resetContent, ...content } = useCreate('text')
+    const { reset: resetAuthor, ...author } = useCreate('text')
+    const { reset: resetInfo, ...info } = useCreate('text')
 
+    const history = useHistory()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -24,9 +24,9 @@ const CreateNew = (props) => {
     }
 
     const handleReset = () => {
-        content.reset()
-        author.reset()
-        info.reset()
+        resetContent()
+        resetAuthor()
+        resetInfo()
     }
 
     return (
@@ -47,7 +47,7 @@ const CreateNew = (props) => {
                 </div>
                 <button>create</button>
             </form>
-            <button onClick={() => handleReset()}>reset</button>
+            <button onClick={handleReset}>reset</button>
         </div>
     )
 
