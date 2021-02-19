@@ -26,6 +26,7 @@ const useResource = (baseUrl) => {
 
   const create = async resource => {
     const response = await axios.post(baseUrl, resource)
+    axios.get(baseUrl).then(response => setResources(response.data))
     return response.data
   }
 
