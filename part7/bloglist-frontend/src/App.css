@@ -1,0 +1,55 @@
+* {
+  background-color: #f0f5f5;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+.main {
+  margin-bottom: 100px;
+}
+
+.notification {
+  border: 2px, black, solid;
+}
+
+.btn {
+  margin: 10px;
+  padding: 5px 8px;
+  background-color: cornflowerblue;
+  color: whitesmoke;
+  border: none;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.btn:hover {
+  background-color: rgb(64, 116, 211);
+  cursor: pointer;
+}
+
+.blog {
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: white;
+  max-width: 800px;
+  display: block;
+}
+
+.blogHeader {
+  background-color: white;
+}
+
+.toggleVisibility {
+  background-color: white;
+}
+
+.extraInfo {
+  padding: 1px 5px;
+  background-color: white;
+}
+
+.error {
+  color: rgb(255, 0, 0);
+  padding: 10px 5px;
+}
