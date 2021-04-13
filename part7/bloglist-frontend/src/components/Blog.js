@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
   const [visible, setVisible] = useState(false);
+
+  // >>>>>>> this should lifted up
   const [likes, setLikes] = useState(blog.likes);
 
   const hideWhenVisible = { display: visible ? "none" : "" };

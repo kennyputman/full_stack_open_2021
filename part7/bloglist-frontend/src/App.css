@@ -19,14 +19,15 @@
   box-sizing: border-box;
 }
 
+
 .main {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   padding: 25px;
   background-color: var(--bc1);
   color: var(--tc3);
-  margin-bottom: 100px;
 }
+
 
 .notification {
   border: 2px, black, solid;

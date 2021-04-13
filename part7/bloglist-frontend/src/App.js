@@ -8,6 +8,8 @@ import "./App.css";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 
+import { useDispatch } from "react-redux";
+
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
@@ -20,6 +22,7 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const blogFormRef = useRef();
 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -33,7 +36,6 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-
 
   const handleLogin = async (event) => {
     event.preventDefault();
