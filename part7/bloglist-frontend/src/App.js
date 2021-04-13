@@ -20,6 +20,7 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const blogFormRef = useRef();
 
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -32,6 +33,7 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
+
 
   const handleLogin = async (event) => {
     event.preventDefault();

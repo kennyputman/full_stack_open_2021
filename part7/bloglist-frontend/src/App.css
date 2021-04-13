@@ -1,10 +1,30 @@
+:root{
+  --bc1: #2e3440;
+  --bc2: #3b4252;
+  --bc3: #434c5e;
+  --bc4: #4c566a;
+  --tc1: #d8dee9;
+  --tc2: #e5e9f0;
+  --tc3: #eceff4;
+  --frost2: #88c0d0;
+  --frost3:#81a1c1;
+  --frost4: #5e81ac;
+}
+
+
 * {
-  background-color: #f0f5f5;
+  margin: 0;
+  padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
 
 .main {
+  height: 100vh;
+  width: 100vw;
+  padding: 25px;
+  background-color: var(--bc1);
+  color: var(--tc3);
   margin-bottom: 100px;
 }
 
@@ -15,15 +35,15 @@
 .btn {
   margin: 10px;
   padding: 5px 8px;
-  background-color: cornflowerblue;
-  color: whitesmoke;
+  background-color: var(--frost2);
+  color: var(--bc1);
   border: none;
   border-radius: 3px;
   font-size: 14px;
 }
 
 .btn:hover {
-  background-color: rgb(64, 116, 211);
+  transform: scale(1.02);
   cursor: pointer;
 }
 
@@ -31,22 +51,12 @@
   margin: 10px;
   padding: 15px;
   border-radius: 5px;
-  background-color: white;
-  max-width: 800px;
+  background-color: var(--bc2);
   display: block;
-}
-
-.blogHeader {
-  background-color: white;
-}
-
-.toggleVisibility {
-  background-color: white;
 }
 
 .extraInfo {
   padding: 1px 5px;
-  background-color: white;
 }
 
 .error {
