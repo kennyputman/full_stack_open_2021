@@ -1,7 +1,7 @@
-import { createStore } from "redux"
-import blogReducer from "./reducers/blogReducer"
+import { applyMiddleware, createStore } from "redux";
+import blogReducer from "./reducers/blogReducer";
+import thunk from "redux-thunk";
 
+const store = createStore(blogReducer, applyMiddleware(thunk));
 
-const store = createStore(blogReducer)
-
-export default store
+export default store;

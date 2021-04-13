@@ -9,6 +9,7 @@ import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 
 import { useDispatch } from "react-redux";
+import { initBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -25,8 +26,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    dispatch(initBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
