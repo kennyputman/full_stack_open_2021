@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { initBlogs } from "./reducers/blogReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  // const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
@@ -38,6 +38,7 @@ const App = () => {
     }
   }, []);
 
+  // -------------- Event Handlers -------------------- //
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log("logging in with", username, password);
@@ -67,68 +68,68 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogAppUser", JSON.stringify(user));
   };
 
-  const handleAddBlog = (event) => {
-    event.preventDefault();
-    console.log("adding blog with", title, author, url, user);
-    try {
-      const blogObject = {
-        user: user,
-        title: title,
-        author: author,
-        url: url,
-      };
-      blogFormRef.current.toggleVisibility();
-      blogService.create(blogObject).then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-        setOpsMessage(`${user.username} added a new blog: ${title}`);
-        setTimeout(() => {
-          setOpsMessage(null);
-        }, 5000);
-        setAuthor("");
-        setTitle("");
-        setUrl("");
-      });
-    } catch (exception) {
-      setOpsMessage("Blog could not be added");
-      setTimeout(() => {
-        setOpsMessage(null);
-      }, 5000);
-    }
-  };
+  // const handleAddBlog = (event) => {
+  //   event.preventDefault();
+  //   console.log("adding blog with", title, author, url, user);
+  //   try {
+  //     const blogObject = {
+  //       user: user,
+  //       title: title,
+  //       author: author,
+  //       url: url,
+  //     };
+  //     blogFormRef.current.toggleVisibility();
+  //     blogService.create(blogObject).then((returnedBlog) => {
+  //       setBlogs(blogs.concat(returnedBlog));
+  //       setOpsMessage(`${user.username} added a new blog: ${title}`);
+  //       setTimeout(() => {
+  //         setOpsMessage(null);
+  //       }, 5000);
+  //       setAuthor("");
+  //       setTitle("");
+  //       setUrl("");
+  //     });
+  //   } catch (exception) {
+  //     setOpsMessage("Blog could not be added");
+  //     setTimeout(() => {
+  //       setOpsMessage(null);
+  //     }, 5000);
+  //   }
+  // };
 
-  const handleDeleteBlog = async (targetBlog) => {
-    try {
-      const result = window.confirm(`Remove blog ${targetBlog}`);
-      if (result) {
-        await blogService.remove(targetBlog.id);
-        setBlogs(blogs.filter((blog) => blog.id !== targetBlog.id));
-      }
-    } catch (exception) {
-      console.log(`blog delete button failed: ${exception}`);
-    }
-  };
+  // const handleDeleteBlog = async (targetBlog) => {
+  //   try {
+  //     const result = window.confirm(`Remove blog ${targetBlog}`);
+  //     if (result) {
+  //       await blogService.remove(targetBlog.id);
+  //       setBlogs(blogs.filter((blog) => blog.id !== targetBlog.id));
+  //     }
+  //   } catch (exception) {
+  //     console.log(`blog delete button failed: ${exception}`);
+  //   }
+  // };
 
-  const handleAddLike = async (targetBlog, likes) => {
-    console.log("liking", targetBlog.title);
-    try {
-      const blogObject = {
-        user: targetBlog.user,
-        likes: likes + 1,
-        author: targetBlog.author,
-        title: targetBlog.title,
-        url: targetBlog.url,
-      };
+  // const handleAddLike = async (targetBlog, likes) => {
+  //   console.log("liking", targetBlog.title);
+  //   try {
+  //     const blogObject = {
+  //       user: targetBlog.user,
+  //       likes: likes + 1,
+  //       author: targetBlog.author,
+  //       title: targetBlog.title,
+  //       url: targetBlog.url,
+  //     };
 
-      blogService.change(blogObject, targetBlog.id);
-    } catch (exception) {
-      console.log(`Like button failed: ${exception}`);
-    }
-  };
+  //     blogService.change(blogObject, targetBlog.id);
+  //   } catch (exception) {
+  //     console.log(`Like button failed: ${exception}`);
+  //   }
+  // };
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
       <BlogForm
-        handleAddBlog={handleAddBlog}
+        // handleAddBlog={handleAddBlog}
         title={title}
         author={author}
         url={url}
@@ -190,11 +191,7 @@ const App = () => {
 
       {blogForm()}
 
-      <Blogs
-        blogs={blogs}
-        handleDeleteBlog={handleDeleteBlog}
-        handleAddLike={handleAddLike}
-      ></Blogs>
+      <Blogs></Blogs>
     </div>
   );
 };
