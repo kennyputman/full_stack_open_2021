@@ -8,8 +8,8 @@ import "./App.css";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 
-import { useDispatch } from "react-redux";
-import { initBlogs } from "./reducers/blogReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { createBlog, initBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   // const [blogs, setBlogs] = useState([]);
@@ -28,6 +28,9 @@ const App = () => {
   useEffect(() => {
     dispatch(initBlogs());
   }, [dispatch]);
+
+  const blogs = useSelector((state) => state);
+  console.log(blogs);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -68,34 +71,32 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogAppUser", JSON.stringify(user));
   };
 
-  // const handleAddBlog = (event) => {
-  //   event.preventDefault();
-  //   console.log("adding blog with", title, author, url, user);
-  //   try {
-  //     const blogObject = {
-  //       user: user,
-  //       title: title,
-  //       author: author,
-  //       url: url,
-  //     };
-  //     blogFormRef.current.toggleVisibility();
-  //     blogService.create(blogObject).then((returnedBlog) => {
-  //       setBlogs(blogs.concat(returnedBlog));
-  //       setOpsMessage(`${user.username} added a new blog: ${title}`);
-  //       setTimeout(() => {
-  //         setOpsMessage(null);
-  //       }, 5000);
-  //       setAuthor("");
-  //       setTitle("");
-  //       setUrl("");
-  //     });
-  //   } catch (exception) {
-  //     setOpsMessage("Blog could not be added");
-  //     setTimeout(() => {
-  //       setOpsMessage(null);
-  //     }, 5000);
-  //   }
-  // };
+  const handleAddBlog = (event) => {
+    event.preventDefault();
+    console.log("adding blog with", title, author, url, user);
+    try {
+      const blogObject = {
+        user: user,
+        title: title,
+        author: author,
+        url: url,
+      };
+      blogFormRef.current.toggleVisibility();
+      dispatch(createBlog(blogObject));
+      setOpsMessage(`${user.username} added a new blog: ${title}`);
+      setTimeout(() => {
+        setOpsMessage(null);
+      }, 5000);
+      setAuthor("");
+      setTitle("");
+      setUrl("");
+    } catch (exception) {
+      setOpsMessage("Blog could not be added");
+      setTimeout(() => {
+        setOpsMessage(null);
+      }, 5000);
+    }
+  };
 
   // const handleDeleteBlog = async (targetBlog) => {
   //   try {
@@ -129,7 +130,7 @@ const App = () => {
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
       <BlogForm
-        // handleAddBlog={handleAddBlog}
+        handleAddBlog={handleAddBlog}
         title={title}
         author={author}
         url={url}
@@ -191,7 +192,7 @@ const App = () => {
 
       {blogForm()}
 
-      <Blogs></Blogs>
+      <Blogs blogs={blogs}></Blogs>
     </div>
   );
 };

@@ -7,12 +7,24 @@ export const initBlogs = () => {
   };
 };
 
+export const createBlog = (content) => {
+  return async (dispatch) => {
+    const newBlog = await blogService.create(content);
+    dispatch({
+      type: "NEW_BLOG",
+      data: newBlog,
+    });
+  };
+};
+
 const blogReducer = (state = [], action) => {
   switch (action.type) {
     case "NEW_BLOG":
       return [...state, action.data];
     case "INIT_BLOGS":
       return action.data;
+    case "ADD_BLOG":
+      return [...state, action.data];
     default:
       return state;
   }

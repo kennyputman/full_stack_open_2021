@@ -1,11 +1,7 @@
 import React from "react";
 import Blog from "./Blog";
-import { useSelector } from "react-redux";
 
-const Blogs = () => {
-  const blogs = useSelector((state) => state);
-  console.log(blogs);
-
+const Blogs = ({ blogs }) => {
   return (
     <div id="blogs">
       {blogs
