@@ -17,6 +17,16 @@ export const createBlog = (content) => {
   };
 };
 
+export const deleteBlog = (id) => {
+  return async (dispatch) => {
+    await blogService.remove(id);
+    dispatch({
+      type: "DELETE_BLOG",
+      data: { id },
+    });
+  };
+};
+
 const blogReducer = (state = [], action) => {
   switch (action.type) {
     case "NEW_BLOG":
@@ -25,6 +35,8 @@ const blogReducer = (state = [], action) => {
       return action.data;
     case "ADD_BLOG":
       return [...state, action.data];
+    case "DELETE_BLOG":
+      return state.filter((blog) => blog.id !== action.data.id);
     default:
       return state;
   }

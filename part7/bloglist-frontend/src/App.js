@@ -9,7 +9,7 @@ import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createBlog, initBlogs } from "./reducers/blogReducer";
+import { createBlog, deleteBlog, initBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   // const [blogs, setBlogs] = useState([]);
@@ -98,17 +98,16 @@ const App = () => {
     }
   };
 
-  // const handleDeleteBlog = async (targetBlog) => {
-  //   try {
-  //     const result = window.confirm(`Remove blog ${targetBlog}`);
-  //     if (result) {
-  //       await blogService.remove(targetBlog.id);
-  //       setBlogs(blogs.filter((blog) => blog.id !== targetBlog.id));
-  //     }
-  //   } catch (exception) {
-  //     console.log(`blog delete button failed: ${exception}`);
-  //   }
-  // };
+  const handleDeleteBlog = async (targetBlog) => {
+    try {
+      const result = window.confirm(`Remove blog ${targetBlog}`);
+      if (result) {
+        dispatch(deleteBlog(targetBlog.id));
+      }
+    } catch (exception) {
+      console.log(`blog delete button failed: ${exception}`);
+    }
+  };
 
   // const handleAddLike = async (targetBlog, likes) => {
   //   console.log("liking", targetBlog.title);
@@ -192,7 +191,7 @@ const App = () => {
 
       {blogForm()}
 
-      <Blogs blogs={blogs}></Blogs>
+      <Blogs blogs={blogs} handleDeleteBlog={handleDeleteBlog}></Blogs>
     </div>
   );
 };
