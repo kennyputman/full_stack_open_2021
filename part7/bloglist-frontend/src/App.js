@@ -16,6 +16,7 @@ import {
   likeBlog,
 } from "./reducers/blogReducer";
 import { setMessage, clearMessage } from "./reducers/messageReducer";
+import { setUser } from "./reducers/userReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -23,10 +24,7 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-
-  const [user, setUser] = useState(null);
   const [loginVisible, setLoginVisible] = useState(false);
-
   const blogFormRef = useRef();
 
   const dispatch = useDispatch();
@@ -37,12 +35,13 @@ const App = () => {
 
   const blogs = useSelector(({ blogs }) => blogs);
   const message = useSelector(({ message }) => message);
+  const user = useSelector(({ user }) => user);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(setUser(user));
       blogService.setToken(user.token);
     }
   }, []);
@@ -61,7 +60,7 @@ const App = () => {
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
 
       blogService.setToken(user.token);
-      setUser(user);
+      dispatch(setUser(user));
       setUsername("");
       setPassword("");
     } catch (exception) {
