@@ -4,7 +4,6 @@ const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
   const [visible, setVisible] = useState(false);
 
   // >>>>>>> this should lifted up
-  const [likes, setLikes] = useState(blog.likes);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
   const showWhenVisible = { display: visible ? "" : "none" };
@@ -40,14 +39,8 @@ const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
       <div style={showWhenVisible} className="extraInfo">
         {blog.url}
         <br></br>
-        Likes: {likes}
-        <button
-          onClick={() => {
-            handleAddLike(blog, likes);
-            setLikes(likes + 1);
-          }}
-          className="btn like"
-        >
+        Likes: {blog.likes}
+        <button onClick={() => handleAddLike(blog)} className="btn like">
           like
         </button>
         <br></br>

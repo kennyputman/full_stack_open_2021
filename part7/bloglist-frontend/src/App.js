@@ -9,7 +9,12 @@ import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createBlog, deleteBlog, initBlogs } from "./reducers/blogReducer";
+import {
+  createBlog,
+  deleteBlog,
+  initBlogs,
+  likeBlog,
+} from "./reducers/blogReducer";
 
 const App = () => {
   // const [blogs, setBlogs] = useState([]);
@@ -109,22 +114,23 @@ const App = () => {
     }
   };
 
-  // const handleAddLike = async (targetBlog, likes) => {
-  //   console.log("liking", targetBlog.title);
-  //   try {
-  //     const blogObject = {
-  //       user: targetBlog.user,
-  //       likes: likes + 1,
-  //       author: targetBlog.author,
-  //       title: targetBlog.title,
-  //       url: targetBlog.url,
-  //     };
+  const handleAddLike = async (targetBlog) => {
+    console.log("liking", targetBlog);
+    try {
+      const blogObject = {
+        user: targetBlog.user,
+        likes: targetBlog.likes + 1,
+        author: targetBlog.author,
+        title: targetBlog.title,
+        url: targetBlog.url,
+      };
 
-  //     blogService.change(blogObject, targetBlog.id);
-  //   } catch (exception) {
-  //     console.log(`Like button failed: ${exception}`);
-  //   }
-  // };
+      blogService.change(blogObject, targetBlog.id);
+      dispatch(likeBlog(targetBlog.id));
+    } catch (exception) {
+      console.log(`Like button failed: ${exception}`);
+    }
+  };
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
@@ -191,7 +197,11 @@ const App = () => {
 
       {blogForm()}
 
-      <Blogs blogs={blogs} handleDeleteBlog={handleDeleteBlog}></Blogs>
+      <Blogs
+        blogs={blogs}
+        handleDeleteBlog={handleDeleteBlog}
+        handleAddLike={handleAddLike}
+      ></Blogs>
     </div>
   );
 };

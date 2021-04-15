@@ -27,6 +27,16 @@ export const deleteBlog = (id) => {
   };
 };
 
+export const likeBlog = (id) => {
+  // Need to create likeBlog service
+  return async (dispatch) => {
+    dispatch({
+      type: "LIKE_BLOG",
+      data: { id },
+    });
+  };
+};
+
 const blogReducer = (state = [], action) => {
   switch (action.type) {
     case "NEW_BLOG":
@@ -37,6 +47,12 @@ const blogReducer = (state = [], action) => {
       return [...state, action.data];
     case "DELETE_BLOG":
       return state.filter((blog) => blog.id !== action.data.id);
+    case "LIKE_BLOG": {
+      const newState = [...state];
+      const index = state.findIndex((blog) => (blog.id = action.data.id));
+      newState[index].likes = newState[index].likes + 1;
+      return newState;
+    }
     default:
       return state;
   }
