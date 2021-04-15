@@ -15,6 +15,7 @@ import {
   initBlogs,
   likeBlog,
 } from "./reducers/blogReducer";
+import { setMessage, clearMessage } from "./reducers/messageReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -24,10 +25,8 @@ const App = () => {
   const [url, setUrl] = useState("");
 
   const [user, setUser] = useState(null);
-
-  const [opsMessage, setOpsMessage] = useState("");
-
   const [loginVisible, setLoginVisible] = useState(false);
+
   const blogFormRef = useRef();
 
   const dispatch = useDispatch();
@@ -36,7 +35,8 @@ const App = () => {
     dispatch(initBlogs());
   }, [dispatch]);
 
-  const blogs = useSelector((state) => state);
+  const blogs = useSelector(({ blogs }) => blogs);
+  const message = useSelector(({ message }) => message);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -65,9 +65,9 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setOpsMessage(`Wrong username or password`);
+      dispatch(setMessage(`Wrong username or password`));
       setTimeout(() => {
-        setOpsMessage(null);
+        dispatch(clearMessage());
       }, 5000);
     }
   };
@@ -89,17 +89,17 @@ const App = () => {
       };
       blogFormRef.current.toggleVisibility();
       dispatch(createBlog(blogObject));
-      setOpsMessage(`${user.username} added a new blog: ${title}`);
+      dispatch(setMessage(`${user.username} added a new blog: ${title}`));
       setTimeout(() => {
-        setOpsMessage(null);
+        dispatch(clearMessage());
       }, 5000);
       setAuthor("");
       setTitle("");
       setUrl("");
     } catch (exception) {
-      setOpsMessage("Blog could not be added");
+      dispatch(setMessage("Blog could not be added"));
       setTimeout(() => {
-        setOpsMessage(null);
+        dispatch(clearMessage());
       }, 5000);
     }
   };
@@ -177,7 +177,7 @@ const App = () => {
     <div className="main">
       <h2>Blogs</h2>
       <div className="notification">
-        <Notification message={opsMessage} />
+        <Notification message={message} />
       </div>
       {user === null ? (
         loginForm()
