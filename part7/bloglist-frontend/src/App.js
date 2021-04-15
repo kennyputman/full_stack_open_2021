@@ -17,14 +17,16 @@ import {
 } from "./reducers/blogReducer";
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
   const [user, setUser] = useState(null);
+
   const [opsMessage, setOpsMessage] = useState("");
+
   const [loginVisible, setLoginVisible] = useState(false);
   const blogFormRef = useRef();
 
@@ -35,7 +37,6 @@ const App = () => {
   }, [dispatch]);
 
   const blogs = useSelector((state) => state);
-  console.log(blogs);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -105,7 +106,7 @@ const App = () => {
 
   const handleDeleteBlog = async (targetBlog) => {
     try {
-      const result = window.confirm(`Remove blog ${targetBlog}`);
+      const result = window.confirm(`Remove blog ${targetBlog.title}`);
       if (result) {
         dispatch(deleteBlog(targetBlog.id));
       }
@@ -115,7 +116,6 @@ const App = () => {
   };
 
   const handleAddLike = async (targetBlog) => {
-    console.log("liking", targetBlog);
     try {
       const blogObject = {
         user: targetBlog.user,
@@ -125,8 +125,7 @@ const App = () => {
         url: targetBlog.url,
       };
 
-      blogService.change(blogObject, targetBlog.id);
-      dispatch(likeBlog(targetBlog.id));
+      dispatch(likeBlog(blogObject, targetBlog.id));
     } catch (exception) {
       console.log(`Like button failed: ${exception}`);
     }

@@ -27,8 +27,8 @@ export const deleteBlog = (id) => {
   };
 };
 
-export const likeBlog = (id) => {
-  // Need to create likeBlog service
+export const likeBlog = (blogObject, id) => {
+  blogService.change(blogObject, id);
   return async (dispatch) => {
     dispatch({
       type: "LIKE_BLOG",
@@ -49,7 +49,7 @@ const blogReducer = (state = [], action) => {
       return state.filter((blog) => blog.id !== action.data.id);
     case "LIKE_BLOG": {
       const newState = [...state];
-      const index = state.findIndex((blog) => (blog.id = action.data.id));
+      const index = newState.findIndex((blog) => blog.id === action.data.id);
       newState[index].likes = newState[index].likes + 1;
       return newState;
     }
