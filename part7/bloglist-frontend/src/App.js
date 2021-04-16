@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import usersService from "./services/usersRepo";
 import Notification from "./components/Notification";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/Login";
@@ -22,6 +21,7 @@ import {
 } from "./reducers/blogReducer";
 import { setMessage, clearMessage } from "./reducers/messageReducer";
 import { setUser } from "./reducers/userReducer";
+import { initializeUsers } from "./reducers/usersReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -32,8 +32,6 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const blogFormRef = useRef();
 
-  const [users, setUsers] = useState([]);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,14 +40,15 @@ const App = () => {
 
   // initialzie users list
   useEffect(() => {
-    usersService.getAll().then((usersList) => setUsers(usersList));
-  }, []);
-
-  console.log(users);
+    dispatch(initializeUsers());
+  }, [dispatch]);
 
   const blogs = useSelector(({ blogs }) => blogs);
   const message = useSelector(({ message }) => message);
   const user = useSelector(({ user }) => user);
+  const users = useSelector(({ users }) => users);
+
+  console.log(users);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -214,7 +213,7 @@ const App = () => {
           <User></User>
         </Route>
         <Route path="/users">
-          <Users></Users>
+          <Users users={users}></Users>
         </Route>
         <Route path="/">
           <div className="notification">
