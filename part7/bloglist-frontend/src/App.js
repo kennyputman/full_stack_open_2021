@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import usersService from "./services/usersRepo";
 import Notification from "./components/Notification";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/Login";
 import "./App.css";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
+import Users from "./components/Users";
+import User from "./components/User";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,11 +32,20 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const blogFormRef = useRef();
 
+  const [users, setUsers] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(initBlogs());
   }, [dispatch]);
+
+  // initialzie users list
+  useEffect(() => {
+    usersService.getAll().then((usersList) => setUsers(usersList));
+  }, []);
+
+  console.log(users);
 
   const blogs = useSelector(({ blogs }) => blogs);
   const message = useSelector(({ message }) => message);
@@ -175,34 +187,50 @@ const App = () => {
   };
 
   return (
-    <div className="main">
-      <h2>Blogs</h2>
-      <div className="notification">
-        <Notification message={message} />
+    <Router>
+      <div>
+        <h2>Blogs</h2>
+        <Link to="/">blogs</Link>
+        <Link to="/users">users</Link>
+
+        {user === null ? (
+          loginForm()
+        ) : (
+          <div>
+            <p>
+              {user.name} logged in
+              <span>
+                <button onClick={handleLogout} className="btn">
+                  logout
+                </button>
+              </span>
+            </p>
+          </div>
+        )}
       </div>
-      {user === null ? (
-        loginForm()
-      ) : (
-        <div>
-          <p>
-            {user.name} logged in
-            <span>
-              <button onClick={handleLogout} className="btn">
-                logout
-              </button>
-            </span>
-          </p>
-        </div>
-      )}
 
-      {blogForm()}
+      <Switch>
+        <Route path="/users/:id">
+          <User></User>
+        </Route>
+        <Route path="/users">
+          <Users></Users>
+        </Route>
+        <Route path="/">
+          <div className="notification">
+            <Notification message={message} />
+          </div>
 
-      <Blogs
-        blogs={blogs}
-        handleDeleteBlog={handleDeleteBlog}
-        handleAddLike={handleAddLike}
-      ></Blogs>
-    </div>
+          {blogForm()}
+
+          <Blogs
+            blogs={blogs}
+            handleDeleteBlog={handleDeleteBlog}
+            handleAddLike={handleAddLike}
+          ></Blogs>
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 export default App;
