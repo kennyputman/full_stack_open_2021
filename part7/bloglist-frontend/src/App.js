@@ -40,9 +40,6 @@ const App = () => {
 
   const message = useSelector(({ message }) => message);
   const user = useSelector(({ user }) => user);
-  const users = useSelector(({ users }) => users);
-
-  console.log("users in app: ", users);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -180,7 +177,7 @@ const App = () => {
           <User></User>
         </Route>
         <Route path="/users">
-          <Users users={users}></Users>
+          <Users></Users>
         </Route>
         <Route path="/">
           <div className="notification">

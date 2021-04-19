@@ -7,7 +7,7 @@ export const initializeUsers = () => {
   };
 };
 
-const blogReducer = (state = [], action) => {
+const usersReducer = (state = [], action) => {
   switch (action.type) {
     case "INIT_USERS":
       return action.data;
@@ -16,4 +16,4 @@ const blogReducer = (state = [], action) => {
   }
 };
 
-export default blogReducer;
+export default usersReducer;

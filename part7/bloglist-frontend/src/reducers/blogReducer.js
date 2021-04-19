@@ -43,8 +43,6 @@ const blogReducer = (state = [], action) => {
       return [...state, action.data];
     case "INIT_BLOGS":
       return action.data;
-    case "ADD_BLOG":
-      return [...state, action.data];
     case "DELETE_BLOG":
       return state.filter((blog) => blog.id !== action.data.id);
     case "LIKE_BLOG": {

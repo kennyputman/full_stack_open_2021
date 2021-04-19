@@ -1,7 +1,19 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-function Users({ users }) {
-  console.log("users in Users: ", users);
+function Users() {
+  const users = useSelector(({ users }) => users);
+
+  const usersList = users.map((user) => (
+    <tr key={user.id}>
+      <td>
+        <Link to={`/users/${user.id}`}>{user.name}</Link>
+      </td>
+      <td>{user.blogs.length}</td>
+    </tr>
+  ));
+
   return (
     <div>
       <h2>Users</h2>
@@ -12,14 +24,7 @@ function Users({ users }) {
             <th>Blogs Created</th>
           </tr>
         </thead>
-        <tbody>
-          {users.map((user) => {
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.blogs}</td>
-            </tr>;
-          })}
-        </tbody>
+        <tbody>{usersList}</tbody>
       </table>
     </div>
   );
