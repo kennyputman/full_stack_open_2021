@@ -13,12 +13,7 @@ import Users from "./components/Users";
 import User from "./components/User";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createBlog,
-  deleteBlog,
-  initBlogs,
-  likeBlog,
-} from "./reducers/blogReducer";
+import { createBlog, initBlogs } from "./reducers/blogReducer";
 import { setMessage, clearMessage } from "./reducers/messageReducer";
 import { setUser } from "./reducers/userReducer";
 import { initializeUsers } from "./reducers/usersReducer";
@@ -43,12 +38,11 @@ const App = () => {
     dispatch(initializeUsers());
   }, [dispatch]);
 
-  const blogs = useSelector(({ blogs }) => blogs);
   const message = useSelector(({ message }) => message);
   const user = useSelector(({ user }) => user);
   const users = useSelector(({ users }) => users);
 
-  console.log(users);
+  console.log("users in app: ", users);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -113,33 +107,6 @@ const App = () => {
       setTimeout(() => {
         dispatch(clearMessage());
       }, 5000);
-    }
-  };
-
-  const handleDeleteBlog = async (targetBlog) => {
-    try {
-      const result = window.confirm(`Remove blog ${targetBlog.title}`);
-      if (result) {
-        dispatch(deleteBlog(targetBlog.id));
-      }
-    } catch (exception) {
-      console.log(`blog delete button failed: ${exception}`);
-    }
-  };
-
-  const handleAddLike = async (targetBlog) => {
-    try {
-      const blogObject = {
-        user: targetBlog.user,
-        likes: targetBlog.likes + 1,
-        author: targetBlog.author,
-        title: targetBlog.title,
-        url: targetBlog.url,
-      };
-
-      dispatch(likeBlog(blogObject, targetBlog.id));
-    } catch (exception) {
-      console.log(`Like button failed: ${exception}`);
     }
   };
 
@@ -222,11 +189,7 @@ const App = () => {
 
           {blogForm()}
 
-          <Blogs
-            blogs={blogs}
-            handleDeleteBlog={handleDeleteBlog}
-            handleAddLike={handleAddLike}
-          ></Blogs>
+          <Blogs></Blogs>
         </Route>
       </Switch>
     </Router>

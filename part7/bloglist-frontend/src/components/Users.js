@@ -1,6 +1,7 @@
 import React from "react";
 
-function Users(users) {
+function Users({ users }) {
+  console.log("users in Users: ", users);
   return (
     <div>
       <h2>Users</h2>
