@@ -5,12 +5,20 @@ import { useSelector } from "react-redux";
 function User() {
   const id = useParams().id;
   const users = useSelector(({ users }) => users);
-
   const user = users.find((u) => u.id === id);
-  console.log(user.blogs);
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div>
-      <p>{user.name}</p>
+      <h3>Added Blogs</h3>
+      <ul>
+        {user.blogs.map((blog) => (
+          <li key={blog.id}>{blog.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }

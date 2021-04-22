@@ -8,7 +8,6 @@ const Blogs = () => {
   const dispatch = useDispatch();
 
   const blogs = useSelector(({ blogs }) => blogs);
-  console.log(blogs);
 
   const handleDeleteBlog = async (targetBlog) => {
     try {
