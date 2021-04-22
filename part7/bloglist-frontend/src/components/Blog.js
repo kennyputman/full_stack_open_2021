@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
+import { likeBlog } from "../reducers/blogReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
-const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
-  const [visible, setVisible] = useState(false);
+const Blog = () => {
+  const id = useParams().id;
+  const blogs = useSelector(({ blogs }) => blogs);
+  const blog = blogs.find((b) => b.id === id);
 
-  // >>>>>>> this should lifted up
+  const dispatch = useDispatch();
 
-  const hideWhenVisible = { display: visible ? "none" : "" };
-  const showWhenVisible = { display: visible ? "" : "none" };
+  const handleAddLike = async (targetBlog) => {
+    try {
+      const blogObject = {
+        user: targetBlog.user,
+        likes: targetBlog.likes + 1,
+        author: targetBlog.author,
+        title: targetBlog.title,
+        url: targetBlog.url,
+      };
 
-  const toggleVisibility = () => {
-    setVisible(!visible);
+      dispatch(likeBlog(blogObject, targetBlog.id));
+    } catch (exception) {
+      console.log(`Like button failed: ${exception}`);
+    }
   };
+
+  if (!blog) {
+    return null;
+  }
 
   return (
     <div className="blog">
@@ -19,24 +37,7 @@ const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
         by {blog.author}
       </div>
 
-      <div className="toggleVisibility">
-        <button
-          onClick={toggleVisibility}
-          className="btn view"
-          style={hideWhenVisible}
-        >
-          view
-        </button>
-        <button
-          onClick={toggleVisibility}
-          className="btn hide"
-          style={showWhenVisible}
-        >
-          hide
-        </button>
-      </div>
-
-      <div style={showWhenVisible} className="extraInfo">
+      <div className="extraInfo">
         {blog.url}
         <br></br>
         Likes: {blog.likes}
@@ -46,9 +47,6 @@ const Blog = ({ blog, handleDeleteBlog, handleAddLike }) => {
         <br></br>
         {blog.user.username}
         <br></br>
-        <button onClick={() => handleDeleteBlog(blog)} className="btn delete">
-          delete
-        </button>
       </div>
     </div>
   );

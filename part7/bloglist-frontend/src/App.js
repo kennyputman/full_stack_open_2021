@@ -9,6 +9,7 @@ import LoginForm from "./components/Login";
 import "./App.css";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
+import Blog from "./components/Blog";
 import Users from "./components/Users";
 import User from "./components/User";
 
@@ -173,13 +174,7 @@ const App = () => {
       </div>
 
       <Switch>
-        <Route path="/users/:id">
-          <User></User>
-        </Route>
-        <Route path="/users">
-          <Users></Users>
-        </Route>
-        <Route path="/">
+        <Route exact path="/">
           <div className="notification">
             <Notification message={message} />
           </div>
@@ -187,6 +182,16 @@ const App = () => {
           {blogForm()}
 
           <Blogs></Blogs>
+        </Route>
+        <Route path="/users/:id">
+          <User></User>
+        </Route>
+        <Route path="/users">
+          <Users></Users>
+        </Route>
+
+        <Route path="/blogs/:id">
+          <Blog></Blog>
         </Route>
       </Switch>
     </Router>
