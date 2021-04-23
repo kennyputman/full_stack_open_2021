@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { likeBlog } from "../reducers/blogReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import CommentList from "./CommentList";
+import CommentForm from "./CommentForm";
+import { createComment } from "../reducers/commentReducer";
 
 const Blog = () => {
   const id = useParams().id;
+
+  const [content, setContent] = useState("");
+
   const blogs = useSelector(({ blogs }) => blogs);
   const comments = useSelector(({ comments }) => comments);
-  const blog = blogs.find((b) => b.id === id);
 
+  const blog = blogs.find((b) => b.id === id);
   const blogComments = comments.filter((comment) => comment.blog === id);
 
   const dispatch = useDispatch();
@@ -27,6 +32,22 @@ const Blog = () => {
       dispatch(likeBlog(blogObject, targetBlog.id));
     } catch (exception) {
       console.log(`Like button failed: ${exception}`);
+    }
+  };
+
+  const handleAddComment = async (event) => {
+    event.preventDefault();
+    console.log("adding comment with");
+    try {
+      const commentObject = {
+        content: content,
+        blog: blog.id,
+      };
+
+      dispatch(createComment(commentObject));
+      setContent("");
+    } catch (exception) {
+      console.log(`Create form failed: ${exception}`);
     }
   };
 
@@ -53,6 +74,11 @@ const Blog = () => {
         <br></br>
       </div>
       <div>
+        <CommentForm
+          content={content}
+          handleAddComment={handleAddComment}
+          setContent={({ target }) => setContent(target.value)}
+        ></CommentForm>
         <CommentList comments={blogComments}></CommentList>
       </div>
     </div>

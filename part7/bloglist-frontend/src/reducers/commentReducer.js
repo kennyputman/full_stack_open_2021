@@ -7,9 +7,9 @@ export const initComments = () => {
   };
 };
 
-export const createComment = (content) => {
+export const createComment = (comment) => {
   return async (dispatch) => {
-    const newComment = await commentService.create(content);
+    const newComment = await commentService.create(comment);
     dispatch({
       type: "NEW_COMMENT",
       data: newComment,
