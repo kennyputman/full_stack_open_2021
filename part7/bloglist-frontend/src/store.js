@@ -6,8 +6,10 @@ import blogReducer from "./reducers/blogReducer";
 import messageReducer from "./reducers/messageReducer";
 import userReducer from "./reducers/userReducer";
 import usersReducer from "./reducers/usersReducer";
+import commentReducer from "./reducers/commentReducer";
 
 const reducer = combineReducers({
+  comments: commentReducer,
   users: usersReducer,
   user: userReducer,
   blogs: blogReducer,

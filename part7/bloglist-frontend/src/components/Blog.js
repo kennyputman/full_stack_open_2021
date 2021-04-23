@@ -2,11 +2,15 @@ import React from "react";
 import { likeBlog } from "../reducers/blogReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import CommentList from "./CommentList";
 
 const Blog = () => {
   const id = useParams().id;
   const blogs = useSelector(({ blogs }) => blogs);
+  const comments = useSelector(({ comments }) => comments);
   const blog = blogs.find((b) => b.id === id);
+
+  const blogComments = comments.filter((comment) => comment.blog === id);
 
   const dispatch = useDispatch();
 
@@ -47,6 +51,9 @@ const Blog = () => {
         <br></br>
         {blog.user.username}
         <br></br>
+      </div>
+      <div>
+        <CommentList comments={blogComments}></CommentList>
       </div>
     </div>
   );

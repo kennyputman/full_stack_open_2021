@@ -18,6 +18,7 @@ import { createBlog, initBlogs } from "./reducers/blogReducer";
 import { setMessage, clearMessage } from "./reducers/messageReducer";
 import { setUser } from "./reducers/userReducer";
 import { initializeUsers } from "./reducers/usersReducer";
+import { initComments } from "./reducers/commentReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -37,6 +38,10 @@ const App = () => {
   // initialzie users list
   useEffect(() => {
     dispatch(initializeUsers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(initComments());
   }, [dispatch]);
 
   const message = useSelector(({ message }) => message);
