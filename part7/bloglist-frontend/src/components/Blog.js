@@ -37,7 +37,6 @@ const Blog = () => {
 
   const handleAddComment = async (event) => {
     event.preventDefault();
-    console.log("adding comment with");
     try {
       const commentObject = {
         content: content,

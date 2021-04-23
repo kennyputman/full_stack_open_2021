@@ -7,7 +7,6 @@ const getAll = () => {
 
 const create = async (comment) => {
   const url = `/api/blogs/${comment.blog}/comments`;
-  console.log("adding comment with content: ", comment);
   const response = await axios.post(url, comment);
   return response.data;
 };
