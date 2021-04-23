@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Button, TextField } from "@material-ui/core";
 
 const LoginForm = ({
   username,
@@ -12,7 +13,7 @@ const LoginForm = ({
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input
+        <TextField
           id="username"
           type="text"
           value={username}
@@ -22,7 +23,7 @@ const LoginForm = ({
       </div>
       <div>
         password
-        <input
+        <TextField
           id="password"
           type="password"
           value={password}
@@ -30,9 +31,14 @@ const LoginForm = ({
           onChange={setPassword}
         />
       </div>
-      <button id="login-button" type="submit">
+      <Button
+        variant="contained"
+        color="primary"
+        id="login-button"
+        type="submit"
+      >
         login
-      </button>
+      </Button>
     </form>
   );
 };

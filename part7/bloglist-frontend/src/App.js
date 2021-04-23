@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Container from "@material-ui/core/Container";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -20,6 +19,14 @@ import { setMessage, clearMessage } from "./reducers/messageReducer";
 import { setUser } from "./reducers/userReducer";
 import { initializeUsers } from "./reducers/usersReducer";
 import { initComments } from "./reducers/commentReducer";
+
+import {
+  Container,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+} from "@material-ui/core";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -159,25 +166,37 @@ const App = () => {
   return (
     <Container>
       <Router>
-        <div>
-          <Link to="/">blogs</Link>
-          <Link to="/users">users</Link>
-
-          {user === null ? (
-            loginForm()
-          ) : (
-            <div>
-              <p>
-                {user.name} logged in
-                <span>
-                  <button onClick={handleLogout} className="btn">
-                    logout
-                  </button>
-                </span>
-              </p>
-            </div>
-          )}
-        </div>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            ></IconButton>
+            <Button color="inherit" component={Link} to="/">
+              Blogs
+            </Button>
+            <Button color="inherit" component={Link} to="/users">
+              Users
+            </Button>
+            <Button color="inherit">
+              {user === null ? (
+                loginForm()
+              ) : (
+                <div>
+                  <p>
+                    {user.name} logged in
+                    <span>
+                      <button onClick={handleLogout} className="btn">
+                        logout
+                      </button>
+                    </span>
+                  </p>
+                </div>
+              )}
+            </Button>
+          </Toolbar>
+        </AppBar>
 
         <Switch>
           <Route exact path="/">

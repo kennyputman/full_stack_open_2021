@@ -1,4 +1,4 @@
-/* :root {
+:root {
   --bc1: #2e3440;
   --bc2: #3b4252;
   --bc3: #434c5e;
@@ -16,10 +16,12 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
+  background-color: var(--bc1);
+  color: var(--tc1);
 }
-
+/* 
 .main {
   height: 100vh;
   width: 100%;
