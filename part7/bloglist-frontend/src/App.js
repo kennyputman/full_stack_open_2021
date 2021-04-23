@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Container from "@material-ui/core/Container";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -156,50 +157,51 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <div>
-        <h2>Blogs</h2>
-        <Link to="/">blogs</Link>
-        <Link to="/users">users</Link>
+    <Container>
+      <Router>
+        <div>
+          <Link to="/">blogs</Link>
+          <Link to="/users">users</Link>
 
-        {user === null ? (
-          loginForm()
-        ) : (
-          <div>
-            <p>
-              {user.name} logged in
-              <span>
-                <button onClick={handleLogout} className="btn">
-                  logout
-                </button>
-              </span>
-            </p>
-          </div>
-        )}
-      </div>
+          {user === null ? (
+            loginForm()
+          ) : (
+            <div>
+              <p>
+                {user.name} logged in
+                <span>
+                  <button onClick={handleLogout} className="btn">
+                    logout
+                  </button>
+                </span>
+              </p>
+            </div>
+          )}
+        </div>
 
-      <Switch>
-        <Route exact path="/">
-          <div className="notification">
-            <Notification message={message} />
-          </div>
+        <Switch>
+          <Route exact path="/">
+            <div className="notification">
+              <Notification message={message} />
+            </div>
 
-          {blogForm()}
+            {blogForm()}
 
-          <Blogs></Blogs>
-        </Route>
-        <Route path="/users/:id">
-          <User></User>
-        </Route>
-        <Route path="/users">
-          <Users></Users>
-        </Route>
+            <Blogs></Blogs>
+          </Route>
+          <Route path="/users/:id">
+            <User></User>
+          </Route>
+          <Route path="/users">
+            <Users></Users>
+          </Route>
 
-        <Route path="/blogs/:id">
-          <Blog></Blog>
-        </Route>
-      </Switch>
-    </Router>
+          <Route path="/blogs/:id">
+            <Blog></Blog>
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
   );
 };
 export default App;
