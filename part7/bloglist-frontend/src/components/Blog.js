@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { likeBlog } from "../reducers/blogReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
 import { createComment } from "../reducers/commentReducer";
-import { Button, Typography } from "@material-ui/core";
+import { Avatar, Button, Typography, Link } from "@material-ui/core";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 
 const Blog = () => {
   const id = useParams().id;
@@ -57,23 +59,33 @@ const Blog = () => {
 
   return (
     <div className="blog">
+      <Link
+        display="inline"
+        underline="none"
+        component={RouterLink}
+        to={`/users/${blog.user.id}`}
+      >
+        <Avatar color="primary">
+          {blog.user.username.charAt(0).toUpperCase()}
+        </Avatar>
+        {blog.user.username}
+      </Link>
       <div className="blogHeader">
         {blog.title}: <br></br>
         by {blog.author}
       </div>
 
       <div className="extraInfo">
-        {blog.url}
-        <Typography gutterBottom>Likes: {blog.likes}</Typography>
+        <Typography>{blog.url}</Typography>
+
         <Button
-          variant="outlined"
           color="primary"
-          size="small"
+          size="medium"
+          startIcon={<ThumbUpAltOutlinedIcon />}
           onClick={() => handleAddLike(blog)}
         >
-          LIKE
+          {blog.likes} Likes
         </Button>
-        {blog.user.username}
       </div>
       <div>
         <CommentForm
@@ -86,5 +98,4 @@ const Blog = () => {
     </div>
   );
 };
-
 export default Blog;

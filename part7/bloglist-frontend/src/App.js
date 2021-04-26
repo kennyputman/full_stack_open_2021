@@ -20,12 +20,16 @@ import { initializeUsers } from "./reducers/usersReducer";
 import { initComments } from "./reducers/commentReducer";
 
 import {
-  Container,
   AppBar,
   Toolbar,
-  IconButton,
   Button,
+  ThemeProvider,
+  Container,
+  CssBaseline,
 } from "@material-ui/core";
+import customTheme from "./styles/theme";
+
+const theme = customTheme;
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -162,15 +166,11 @@ const App = () => {
   };
 
   return (
-    <Container>
+    <ThemeProvider theme={theme}>
+      <CssBaseline></CssBaseline>
       <Router>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-            ></IconButton>
             <Button color="inherit" component={Link} to="/">
               Blogs
             </Button>
@@ -195,30 +195,31 @@ const App = () => {
             </Button>
           </Toolbar>
         </AppBar>
+        <Container>
+          <Switch>
+            <Route exact path="/">
+              <div className="notification">
+                <Notification message={message} />
+              </div>
 
-        <Switch>
-          <Route exact path="/">
-            <div className="notification">
-              <Notification message={message} />
-            </div>
+              {blogForm()}
 
-            {blogForm()}
+              <Blogs></Blogs>
+            </Route>
+            <Route path="/users/:id">
+              <User></User>
+            </Route>
+            <Route path="/users">
+              <Users></Users>
+            </Route>
 
-            <Blogs></Blogs>
-          </Route>
-          <Route path="/users/:id">
-            <User></User>
-          </Route>
-          <Route path="/users">
-            <Users></Users>
-          </Route>
-
-          <Route path="/blogs/:id">
-            <Blog></Blog>
-          </Route>
-        </Switch>
+            <Route path="/blogs/:id">
+              <Blog></Blog>
+            </Route>
+          </Switch>
+        </Container>
       </Router>
-    </Container>
+    </ThemeProvider>
   );
 };
 export default App;
