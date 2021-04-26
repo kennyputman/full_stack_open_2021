@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
 import { createComment } from "../reducers/commentReducer";
+import { Button, Typography } from "@material-ui/core";
 
 const Blog = () => {
   const id = useParams().id;
@@ -63,14 +64,16 @@ const Blog = () => {
 
       <div className="extraInfo">
         {blog.url}
-        <br></br>
-        Likes: {blog.likes}
-        <button onClick={() => handleAddLike(blog)} className="btn like">
-          like
-        </button>
-        <br></br>
+        <Typography gutterBottom>Likes: {blog.likes}</Typography>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() => handleAddLike(blog)}
+        >
+          LIKE
+        </Button>
         {blog.user.username}
-        <br></br>
       </div>
       <div>
         <CommentForm

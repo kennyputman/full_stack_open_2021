@@ -5,6 +5,7 @@ import {
   TableRow,
   TableCell,
   TableContainer,
+  Typography,
 } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -15,7 +16,9 @@ const Blogs = () => {
 
   return (
     <div id="blogs">
-      <h2>Blogs</h2>
+      <Typography align="center" variant="h6" component="h2" gutterBottom>
+        Blogs
+      </Typography>
 
       <TableContainer component={Paper}>
         <Table>

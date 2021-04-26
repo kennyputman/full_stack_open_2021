@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 
 const CommentForm = ({ handleAddComment, content, setContent }) => {
@@ -14,9 +15,15 @@ const CommentForm = ({ handleAddComment, content, setContent }) => {
             onChange={setContent}
           ></input>
         </div>
-        <button id="submitComment" type="submit" className="btn submit">
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          id="submitComment"
+          type="submit"
+        >
           create
-        </button>
+        </Button>
       </form>
     </div>
   );

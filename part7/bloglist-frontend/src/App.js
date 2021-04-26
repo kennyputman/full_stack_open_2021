@@ -6,7 +6,6 @@ import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/Login";
-import "./App.css";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 import Blog from "./components/Blog";
@@ -43,7 +42,6 @@ const App = () => {
     dispatch(initBlogs());
   }, [dispatch]);
 
-  // initialzie users list
   useEffect(() => {
     dispatch(initializeUsers());
   }, [dispatch]);
@@ -187,9 +185,9 @@ const App = () => {
                   <p>
                     {user.name} logged in
                     <span>
-                      <button onClick={handleLogout} className="btn">
+                      <Button onClick={handleLogout} className="btn">
                         logout
-                      </button>
+                      </Button>
                     </span>
                   </p>
                 </div>
