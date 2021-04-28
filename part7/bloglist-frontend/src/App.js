@@ -44,13 +44,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initBlogs());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(initializeUsers());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(initComments());
   }, [dispatch]);
 
@@ -94,6 +88,8 @@ const App = () => {
   const handleLogout = () => {
     console.log("handleLogout Initiated");
     window.localStorage.removeItem("loggedBlogAppUser", JSON.stringify(user));
+    dispatch(setUser(null));
+    setLoginVisible(false);
   };
 
   const handleAddBlog = (event) => {
