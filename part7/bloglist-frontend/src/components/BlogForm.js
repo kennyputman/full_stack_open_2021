@@ -1,3 +1,4 @@
+import { Button, TextField } from "@material-ui/core";
 import React from "react";
 
 const BlogForm = ({
@@ -12,40 +13,46 @@ const BlogForm = ({
   return (
     <div>
       <h2>Create a New Blog</h2>
-      <form onSubmit={handleAddBlog} className="newBlog">
+      <form onSubmit={handleAddBlog}>
         <div>
           title:
-          <input
+          <TextField
             id="title"
             type="text"
             name="title"
+            fullWidth
+            required
             value={title}
             onChange={setTitle}
-          ></input>
+          ></TextField>
         </div>
         <div>
           author:
-          <input
+          <TextField
             id="author"
             type="text"
             name="author"
+            fullWidth
+            required
             value={author}
             onChange={setAuthor}
-          ></input>
+          ></TextField>
         </div>
         <div>
           url:
-          <input
+          <TextField
             id="url"
             type="text"
             name="url"
+            fullWidth
+            required
             value={url}
             onChange={setUrl}
-          ></input>
+          ></TextField>
         </div>
-        <button id="submitBlog" type="submit" className="btn submit">
+        <Button id="submitBlog" type="submit" className="btn submit">
           create
-        </button>
+        </Button>
       </form>
     </div>
   );

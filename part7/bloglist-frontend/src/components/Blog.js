@@ -6,17 +6,14 @@ import { useParams } from "react-router";
 import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
 import { createComment } from "../reducers/commentReducer";
-import { Avatar, Button, Typography, Link } from "@material-ui/core";
+import { Avatar, Button, Link, Typography } from "@material-ui/core";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 
 const Blog = () => {
   const id = useParams().id;
-
   const [content, setContent] = useState("");
-
   const blogs = useSelector(({ blogs }) => blogs);
   const comments = useSelector(({ comments }) => comments);
-
   const blog = blogs.find((b) => b.id === id);
   const blogComments = comments.filter((comment) => comment.blog === id);
 
@@ -59,25 +56,32 @@ const Blog = () => {
 
   return (
     <div className="blog">
-      <Link
-        display="inline"
-        underline="none"
-        component={RouterLink}
-        to={`/users/${blog.user.id}`}
-      >
-        <Avatar color="primary">
-          {blog.user.username.charAt(0).toUpperCase()}
-        </Avatar>
-        {blog.user.username}
-      </Link>
       <div className="blogHeader">
-        {blog.title}: <br></br>
+        <Link
+          display="inline"
+          underline="none"
+          component={RouterLink}
+          to={`/users/${blog.user.id}`}
+        >
+          <Avatar color="primary">
+            {blog.user.username.charAt(0).toUpperCase()}
+          </Avatar>
+          {blog.user.username}
+        </Link>
+        <Typography variant="h5" align="center">
+          <Link
+            color="textPrimary"
+            component={RouterLink}
+            to={{ pathname: `${blog.url}` }}
+            target="_blank"
+          >
+            {blog.title}
+          </Link>
+        </Typography>
         by {blog.author}
       </div>
 
       <div className="extraInfo">
-        <Typography>{blog.url}</Typography>
-
         <Button
           color="primary"
           size="medium"

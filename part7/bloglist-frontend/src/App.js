@@ -170,30 +170,32 @@ const App = () => {
       <CssBaseline></CssBaseline>
       <Router>
         <AppBar position="static">
-          <Toolbar>
-            <Button color="inherit" component={Link} to="/">
-              Blogs
-            </Button>
-            <Button color="inherit" component={Link} to="/users">
-              Users
-            </Button>
-            <Button color="inherit">
-              {user === null ? (
-                loginForm()
-              ) : (
-                <div>
-                  <p>
-                    {user.name} logged in
-                    <span>
-                      <Button onClick={handleLogout} className="btn">
-                        logout
-                      </Button>
-                    </span>
-                  </p>
-                </div>
-              )}
-            </Button>
-          </Toolbar>
+          <Container>
+            <Toolbar>
+              <Button color="inherit" component={Link} to="/">
+                Blogs
+              </Button>
+              <Button color="inherit" component={Link} to="/users">
+                Users
+              </Button>
+              <Button color="inherit">
+                {user === null ? (
+                  loginForm()
+                ) : (
+                  <div>
+                    <p>
+                      {user.name} logged in
+                      <span>
+                        <Button onClick={handleLogout} className="btn">
+                          logout
+                        </Button>
+                      </span>
+                    </p>
+                  </div>
+                )}
+              </Button>
+            </Toolbar>
+          </Container>
         </AppBar>
         <Container>
           <Switch>
