@@ -85,6 +85,8 @@ const Blog = () => {
         <Button
           color="primary"
           size="medium"
+          variant="contained"
+          style={{ margin: "8px" }}
           startIcon={<ThumbUpAltOutlinedIcon />}
           onClick={() => handleAddLike(blog)}
         >

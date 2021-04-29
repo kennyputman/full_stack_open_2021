@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessage, clearMessage } from "../reducers/messageReducer";
@@ -48,39 +55,49 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <Grid
+      container
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: "50vh" }}
+    >
       <div className="notification">
         <Notification message={message} />
       </div>
       <form onSubmit={handleLogin}>
-        <div>
-          <label>Username</label>
+        <Box m={1}>
+          <Typography>Username</Typography>
           <TextField
             id="username"
             type="text"
             name="Username"
+            component={Paper}
             onChange={handleUsernameChange}
           />
-        </div>
-        <div>
-          password
+        </Box>
+        <Box m={1}>
+          <Typography>password</Typography>
+
           <TextField
             id="password"
             type="password"
             name="Password"
+            component={Paper}
             onChange={handlePasswordChange}
           />
-        </div>
-        <Button
-          variant="contained"
-          color="primary"
-          id="login-button"
-          type="submit"
-        >
-          login
-        </Button>
+        </Box>
+        <Box m={1}>
+          <Button
+            variant="contained"
+            color="primary"
+            id="login-button"
+            type="submit"
+          >
+            login
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Grid>
   );
 };
 

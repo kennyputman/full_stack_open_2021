@@ -1,4 +1,4 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, Paper, TextField } from "@material-ui/core";
 import React from "react";
 
 const BlogForm = ({
@@ -20,6 +20,7 @@ const BlogForm = ({
             id="title"
             type="text"
             name="title"
+            component={Paper}
             fullWidth
             required
             value={title}
@@ -32,6 +33,7 @@ const BlogForm = ({
             id="author"
             type="text"
             name="author"
+            component={Paper}
             fullWidth
             required
             value={author}
@@ -44,13 +46,20 @@ const BlogForm = ({
             id="url"
             type="text"
             name="url"
+            component={Paper}
             fullWidth
             required
             value={url}
             onChange={setUrl}
           ></TextField>
         </div>
-        <Button id="submitBlog" type="submit" className="btn submit">
+        <Button
+          id="submitBlog"
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ margin: "10px" }}
+        >
           create
         </Button>
       </form>

@@ -113,6 +113,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <CssBaseline></CssBaseline>
       <Router>
         <AppBar position="static">
@@ -167,4 +168,5 @@ const App = () => {
     </ThemeProvider>
   );
 };
+
 export default App;

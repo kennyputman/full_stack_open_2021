@@ -1,19 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
 
-:root {
-  --bc1: #2e3440;
-  --bc2: #3b4252;
-  --bc3: #434c5e;
-  --bc4: #4c566a;
-  --tc1: #d8dee9;
-  --tc2: #e5e9f0;
-  --tc3: #eceff4;
-  --frost2: #88c0d0;
-  --frost3: #81a1c1;
-  --frost4: #5e81ac;
-  --warning-orange: #d08770;
-}
-
 html,
 body {
   margin: 0;
