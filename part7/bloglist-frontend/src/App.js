@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link as RouterLink,
+} from "react-router-dom";
 
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Blogs from "./components/Blogs";
-import LoginForm from "./components/Login";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 import Blog from "./components/Blog";
 import Users from "./components/Users";
 import User from "./components/User";
+import Login from "./components/Login";
 
 import { useDispatch, useSelector } from "react-redux";
 import { createBlog, initBlogs } from "./reducers/blogReducer";
@@ -20,6 +24,7 @@ import { initializeUsers } from "./reducers/usersReducer";
 import { initComments } from "./reducers/commentReducer";
 
 import {
+  Link,
   AppBar,
   Toolbar,
   Button,
@@ -32,12 +37,9 @@ import customTheme from "./styles/theme";
 const theme = customTheme;
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const [loginVisible, setLoginVisible] = useState(false);
   const blogFormRef = useRef();
 
   const dispatch = useDispatch();
@@ -48,9 +50,6 @@ const App = () => {
     dispatch(initComments());
   }, [dispatch]);
 
-  const message = useSelector(({ message }) => message);
-  const user = useSelector(({ user }) => user);
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
@@ -60,36 +59,15 @@ const App = () => {
     }
   }, []);
 
+  const message = useSelector(({ message }) => message);
+  const user = useSelector(({ user }) => user);
+
   // -------------- Event Handlers -------------------- //
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    console.log("logging in with", username, password);
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-
-      blogService.setToken(user.token);
-      dispatch(setUser(user));
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      dispatch(setMessage(`Wrong username or password`));
-      setTimeout(() => {
-        dispatch(clearMessage());
-      }, 5000);
-    }
-  };
 
   const handleLogout = () => {
     console.log("handleLogout Initiated");
     window.localStorage.removeItem("loggedBlogAppUser", JSON.stringify(user));
     dispatch(setUser(null));
-    setLoginVisible(false);
   };
 
   const handleAddBlog = (event) => {
@@ -133,34 +111,6 @@ const App = () => {
     </Togglable>
   );
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? "none" : "" };
-    const showWhenVisible = { display: loginVisible ? "" : "none" };
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <Button onClick={() => setLoginVisible(true)} className="btn">
-            login
-          </Button>
-        </div>
-
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            setPassword={({ target }) => setPassword(target.value)}
-            setUsername={({ target }) => setUsername(target.value)}
-            handleLogin={handleLogin}
-          />
-          <Button onClick={() => setLoginVisible(false)} className="btn">
-            cancel
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline></CssBaseline>
@@ -168,28 +118,23 @@ const App = () => {
         <AppBar position="static">
           <Container>
             <Toolbar>
-              <Button color="inherit" component={Link} to="/">
+              <Button color="inherit" component={RouterLink} to="/">
                 Blogs
               </Button>
-              <Button color="inherit" component={Link} to="/users">
+              <Button color="inherit" component={RouterLink} to="/users">
                 Users
               </Button>
-              <Button color="inherit">
-                {user === null ? (
-                  loginForm()
-                ) : (
-                  <div>
-                    <p>
-                      {user.name}
-                      <span>
-                        <Button onClick={handleLogout} className="btn">
-                          logout
-                        </Button>
-                      </span>
-                    </p>
-                  </div>
-                )}
-              </Button>
+              {user === null ? (
+                <Button align="right">
+                  <Link color="inherit" component={RouterLink} to="/login">
+                    Login
+                  </Link>
+                </Button>
+              ) : (
+                <Button color="inherit" onClick={handleLogout} className="btn">
+                  logout
+                </Button>
+              )}
             </Toolbar>
           </Container>
         </AppBar>
@@ -210,9 +155,11 @@ const App = () => {
             <Route path="/users">
               <Users></Users>
             </Route>
-
             <Route path="/blogs/:id">
               <Blog></Blog>
+            </Route>
+            <Route path="/login">
+              <Login></Login>
             </Route>
           </Switch>
         </Container>
