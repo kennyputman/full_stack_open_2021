@@ -85,6 +85,13 @@ const typeDefs = gql`
     id: ID!
   }
 
+  type AuthorWithCount {
+    name: String!
+    born: Int
+    id: ID!
+    bookCount: Int!
+  }
+
   type Book {
     title: String!
     published: Int!
@@ -97,6 +104,7 @@ const typeDefs = gql`
     bookCount: Int!
     authorCount: Int!
     allBooks: [Book!]!
+    allAuthors: [AuthorWithCount!]!
   }
 `;
 
@@ -105,6 +113,15 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: () => books,
+    allAuthors: () => {
+      return authors.map((author) => {
+        const authorBookCount = books.filter(
+          (book) => book.author === author.name
+        ).length;
+
+        return { ...author, bookCount: authorBookCount };
+      });
+    },
   },
 };
 
