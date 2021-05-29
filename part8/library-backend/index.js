@@ -166,9 +166,6 @@ const resolvers = {
       const book = { ...args, id: uuid() };
       books.push(book);
 
-      console.log("Book: ", book);
-      console.log("Book List: ", books);
-
       if (!authors.find((author) => author.name === args.author)) {
         const author = { name: args.author, id: uuid() };
         authors.push(author);
