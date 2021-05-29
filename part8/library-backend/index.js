@@ -164,11 +164,14 @@ const resolvers = {
       }
 
       const book = { ...args, id: uuid() };
-      books.concat(book);
+      books.push(book);
 
-      if (!authors.find((author) => author.name === args.name)) {
+      console.log("Book: ", book);
+      console.log("Book List: ", books);
+
+      if (!authors.find((author) => author.name === args.author)) {
         const author = { name: args.author, id: uuid() };
-        authors = authors.concat(author);
+        authors.push(author);
       }
 
       return book;
