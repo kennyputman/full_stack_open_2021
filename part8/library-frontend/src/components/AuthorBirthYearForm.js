@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import { useMutation } from "@apollo/client";
 
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
 
-const AuthorBirthYearForm = ({ setError }) => {
+const AuthorBirthYearForm = ({ setError, authors }) => {
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
 
@@ -13,7 +14,7 @@ const AuthorBirthYearForm = ({ setError }) => {
 
   const submit = async (event) => {
     event.preventDefault();
-
+    console.log("name", name);
     setBirthYear({
       variables: { name, born },
     });
@@ -28,17 +29,20 @@ const AuthorBirthYearForm = ({ setError }) => {
     }
   }, [result.data]); // eslint-disable-line
 
+  const nameHandleChange = (selectedOption) => {
+    setName(selectedOption.name);
+  };
   return (
     <div>
       <h3>Set Born Year</h3>
       <form onSubmit={submit}>
-        <div>
-          name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
+        <Select
+          options={authors}
+          getOptionLabel={(option) => option.name}
+          getOptionValue={(option) => option.name}
+          onChange={nameHandleChange}
+          isClearable={true}
+        ></Select>
         <div>
           born
           <input
