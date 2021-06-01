@@ -180,11 +180,10 @@ const resolvers = {
       if (!author) {
         return null;
       }
-
       const updatedAuthor = { ...author, born: args.setBornTo };
 
-      authors = authors.map(
-        (author) => (author.id = updatedAuthor.id ? updatedAuthor : author)
+      authors = authors.map((author) =>
+        author.id === updatedAuthor.id ? updatedAuthor : author
       );
 
       return updatedAuthor;
