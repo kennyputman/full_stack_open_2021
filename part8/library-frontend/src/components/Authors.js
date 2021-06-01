@@ -1,6 +1,7 @@
 import React from "react";
+import AuthorBirthYearForm from "./AuthorBirthYearForm";
 
-const Authors = ({ authors, show }) => {
+const Authors = ({ authors, show, setError }) => {
   if (!show) {
     return null;
   }
@@ -24,6 +25,7 @@ const Authors = ({ authors, show }) => {
           ))}
         </tbody>
       </table>
+      <AuthorBirthYearForm setError={setError}></AuthorBirthYearForm>
     </div>
   );
 };
