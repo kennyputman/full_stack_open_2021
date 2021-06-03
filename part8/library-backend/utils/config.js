@@ -1,0 +1,5 @@
+require("dotenv").config();
+
+MONGODB_URI = "hmmm";
+JWT_SECRET =
+  "RFhNwxBX6/m1HqVZeRj9iwWo87kBN6hT1mJEDKVHN3bwAII1kdX2uS0rvlFPqsLdbwN4zhXc4noRSiNgvdyulGhTJYjVXed+bRi2onJX2M58CmcDKhEkS7AmCSPNCmsoUAx9KF/kicl8GDaDn9dqpoTtf4aGV+8HfxjWb1qMa/m3lWCLS5BIGCE19mrsXvVo+2L8Coo3YgOo8kaPXrfMstFIghXYJfPvIOmRRy0sb9tsXgqJAZ7MlockKUScUARRhKuN+xAP8oZNzMJYMk6MM3jO4eNXb16BhKToqeV2HJsH8OKgCkpy2pxwCMTP2RSHFsu73Im0se1jd1xbLuhwGw==";
