@@ -1,7 +1,6 @@
 const { UserInputError } = require("apollo-server");
 const Book = require("../models/book");
 const Author = require("../models/author");
-const { populate } = require("../models/book");
 
 const resolvers = {
   Query: {
@@ -46,22 +45,43 @@ const resolvers = {
 
       if (authorExists) {
         const book = new Book({ ...args, author: authorExists._id });
-        await book.save();
+
+        await book.save().catch((error) => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        });
 
         const author = await Author.findById(authorExists._id);
         author.books = author.books.concat(book._id);
-        author.save();
+        author.save().catch((error) => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        });
 
         result = await Book.findById(book._id).populate("author");
         return result;
       } else if (authorExists == null) {
         const author = new Author({ name: args.author });
-        await author.save();
+        await author.save().catch((error) => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        });
         const book = new Book({ ...args, author: author._id });
-        await book.save();
+        await book.save().catch((error) => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        });
 
         author.books = author.books.concat(book._id);
-        author.save();
+        author.save().catch((error) => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        });
 
         result = await Book.findById(book._id).populate("author");
         return result;
@@ -71,10 +91,16 @@ const resolvers = {
     editAuthor: async (root, args) => {
       const author = await Author.findOne({ name: args.name });
       if (!author) {
-        return null;
+        throw new UserInputError("Author is not found");
       }
       author.born = args.setBornTo;
-      await author.save();
+      try {
+        await author.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
       return author;
     },
   },
