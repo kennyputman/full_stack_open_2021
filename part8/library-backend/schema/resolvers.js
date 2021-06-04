@@ -1,30 +1,33 @@
 const { UserInputError } = require("apollo-server");
 const Book = require("../models/book");
 const Author = require("../models/author");
+const { populate } = require("../models/book");
 
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      return Book.find({}).populate("author");
-      // if (!args.author && !args.genre) {
-      //   return books.find({});
-      // }
-      // let booksFiltered = books;
+    allBooks: async (root, args) => {
+      const books = await Book.find({}).populate("author");
 
-      // if (args.author) {
-      //   booksFiltered = booksFiltered.filter(
-      //     (book) => book.author === args.author
-      //   );
-      // }
-      // if (args.genre) {
-      //   booksFiltered = booksFiltered.filter((book) =>
-      //     book.genres.includes(args.genre)
-      //   );
-      // }
+      if (!args.author && !args.genre) {
+        return books;
+      }
 
-      // return booksFiltered;
+      let booksFiltered = books;
+
+      if (args.author) {
+        booksFiltered = booksFiltered.filter(
+          (book) => book.author.name === args.author
+        );
+      }
+      if (args.genre) {
+        booksFiltered = booksFiltered.filter((book) =>
+          book.genres.includes(args.genre)
+        );
+      }
+
+      return booksFiltered;
     },
     allAuthors: async () => {
       const authors = await Author.find({}).lean();
