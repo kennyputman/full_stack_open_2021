@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const Books = ({ books, show }) => {
   const [booksFilter, setBooksFilter] = useState("all genres");
+
   const [filteredBooks, setFilteredBooks] = useState(books);
 
   // flattens books.book.genres arrays and then removes duplicates
@@ -9,16 +10,23 @@ const Books = ({ books, show }) => {
     .reduce((acc, book) => {
       return acc.concat(book.genres);
     }, [])
-    .reduce((acc, current) => {
-      return acc.includes(current) ? acc : [...acc, current];
-    }, []);
+    .reduce(
+      (acc, current) => {
+        return acc.includes(current) ? acc : [...acc, current];
+      },
+      ["all genres"]
+    );
 
   const booksFilterHandler = (filter) => {
     setBooksFilter(filter);
-    const newBookList = books.filter((book) => {
-      return book.genres.includes(filter) ? book : null;
-    });
-    setFilteredBooks(newBookList);
+    if (filter === "all genres") {
+      setFilteredBooks(books);
+    } else {
+      const newBookList = books.filter((book) => {
+        return book.genres.includes(filter) ? book : null;
+      });
+      setFilteredBooks(newBookList);
+    }
   };
 
   if (!show) {

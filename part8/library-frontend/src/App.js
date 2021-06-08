@@ -6,7 +6,8 @@ import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
-import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
+import { ALL_AUTHORS, ALL_BOOKS, ME } from "./queries";
+import Recommendations from "./components/Recommendations";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -14,10 +15,12 @@ const App = () => {
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
   );
+
   const client = useApolloClient();
 
   const authors = useQuery(ALL_AUTHORS);
   const books = useQuery(ALL_BOOKS);
+  const user = useQuery(ME);
 
   const notify = (message) => {
     setErrorMessage(message);
@@ -34,7 +37,6 @@ const App = () => {
     setToken(null);
     localStorage.clear();
     client.resetStore();
-    console.log("logout");
   };
 
   return (
@@ -48,6 +50,11 @@ const App = () => {
       />
 
       <Books show={page === "books"} books={books.data.allBooks} />
+      <Recommendations
+        show={page === "recommendations"}
+        books={books.data.allBooks}
+        user={user.data.me}
+      ></Recommendations>
 
       <NewBook show={page === "add"} />
       <LoginForm
