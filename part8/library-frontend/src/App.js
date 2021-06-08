@@ -5,12 +5,15 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
+import NavBar from "./components/NavBar";
 import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
   const [errorMessage, setErrorMessage] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(
+    localStorage.getItem("library-user-token")
+  );
   const client = useApolloClient();
 
   const authors = useQuery(ALL_AUTHORS);
@@ -34,20 +37,9 @@ const App = () => {
     console.log("logout");
   };
 
-  const LoginButton = ({ token }) => {
-    if (token) {
-      return <button onClick={() => logout()}>logout</button>;
-    }
-    return <button onClick={() => setPage("login")}>login</button>;
-  };
   return (
     <div>
-      <div>
-        <button onClick={() => setPage("authors")}>authors</button>
-        <button onClick={() => setPage("books")}>books</button>
-        <button onClick={() => setPage("add")}>add book</button>
-        <LoginButton token={token}></LoginButton>
-      </div>
+      <NavBar token={token} setPage={setPage} logout={logout}></NavBar>
       <Notification errorMessage={errorMessage}></Notification>
       <Authors
         show={page === "authors"}

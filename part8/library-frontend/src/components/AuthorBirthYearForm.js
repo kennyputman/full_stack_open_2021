@@ -32,6 +32,10 @@ const AuthorBirthYearForm = ({ setError, authors }) => {
   const nameHandleChange = (selectedOption) => {
     setName(selectedOption.name);
   };
+
+  if (!localStorage.getItem("library-user-token")) {
+    return null;
+  }
   return (
     <div>
       <h3>Set Born Year</h3>
