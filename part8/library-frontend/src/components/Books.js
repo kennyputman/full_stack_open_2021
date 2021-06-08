@@ -1,24 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Books = ({ books, show }) => {
+  const [booksFilter, setBooksFilter] = useState("all genres");
+  const [filteredBooks, setFilteredBooks] = useState(books);
+
+  // flattens books.book.genres arrays and then removes duplicates
+  const genresList = books
+    .reduce((acc, book) => {
+      return acc.concat(book.genres);
+    }, [])
+    .reduce((acc, current) => {
+      return acc.includes(current) ? acc : [...acc, current];
+    }, []);
+
+  const booksFilterHandler = (filter) => {
+    setBooksFilter(filter);
+    const newBookList = books.filter((book) => {
+      return book.genres.includes(filter) ? book : null;
+    });
+    setFilteredBooks(newBookList);
+  };
+
   if (!show) {
     return null;
   }
 
-  console.log(books);
-
   return (
     <div>
       <h2>books</h2>
-
+      <p>
+        In genre: <b>{booksFilter}</b>
+      </p>
       <table>
         <tbody>
           <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
+            <th>Book</th>
+            <th>Author</th>
+            <th>Published</th>
           </tr>
-          {books.map((book) => (
+          {filteredBooks.map((book) => (
             <tr key={book.title}>
               <td>{book.title}</td>
               <td>{book.author.name}</td>
@@ -27,6 +47,13 @@ const Books = ({ books, show }) => {
           ))}
         </tbody>
       </table>
+      <div>
+        {genresList.map((genre) => (
+          <button key={genre} onClick={() => booksFilterHandler(genre)}>
+            {genre}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
