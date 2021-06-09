@@ -1,5 +1,5 @@
-import { useApolloClient, useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import { useApolloClient, useLazyQuery, useQuery } from "@apollo/client";
+import React, { useState, useEffect } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
@@ -18,9 +18,12 @@ const App = () => {
 
   const client = useApolloClient();
 
-  const authors = useQuery(ALL_AUTHORS);
-  const books = useQuery(ALL_BOOKS);
-  const user = useQuery(ME);
+  const { data: authors, loading: authorsLoading } = useQuery(ALL_AUTHORS);
+  const { data: books, loading: booksLoading } = useQuery(ALL_BOOKS);
+  const { data: user } = useQuery(ME);
+
+  const [getRecs, { data: userRecs, loading: userRecsLoading }] =
+    useLazyQuery(ALL_BOOKS);
 
   const notify = (message) => {
     setErrorMessage(message);
@@ -29,7 +32,7 @@ const App = () => {
     }, 5000);
   };
 
-  if (authors.loading || books.loading) {
+  if (authorsLoading || booksLoading || userRecsLoading) {
     return <div>loading...</div>;
   }
 
@@ -45,15 +48,16 @@ const App = () => {
       <Notification errorMessage={errorMessage}></Notification>
       <Authors
         show={page === "authors"}
-        authors={authors.data.allAuthors}
+        authors={authors.allAuthors}
         setError={notify}
       />
 
-      <Books show={page === "books"} books={books.data.allBooks} />
+      <Books show={page === "books"} books={books.allBooks} />
       <Recommendations
         show={page === "recommendations"}
-        books={books.data.allBooks}
-        user={user.data.me}
+        user={user.me}
+        books={books.allBooks}
+        onClick={() => getRecs({ variables: { genre: user.me.favoriteGenre } })}
       ></Recommendations>
 
       <NewBook show={page === "add"} />
