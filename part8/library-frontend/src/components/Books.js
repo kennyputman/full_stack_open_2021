@@ -39,6 +39,13 @@ const Books = ({ books, show }) => {
       <p>
         In genre: <b>{booksFilter}</b>
       </p>
+      <div>
+        {genresList.map((genre) => (
+          <button key={genre} onClick={() => booksFilterHandler(genre)}>
+            {genre}
+          </button>
+        ))}
+      </div>{" "}
       <table>
         <tbody>
           <tr>
@@ -55,13 +62,6 @@ const Books = ({ books, show }) => {
           ))}
         </tbody>
       </table>
-      <div>
-        {genresList.map((genre) => (
-          <button key={genre} onClick={() => booksFilterHandler(genre)}>
-            {genre}
-          </button>
-        ))}
-      </div>
     </div>
   );
 };
