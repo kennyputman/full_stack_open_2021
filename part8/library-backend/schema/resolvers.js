@@ -1,5 +1,10 @@
-const { UserInputError, AuthenticationError } = require("apollo-server");
+const {
+  UserInputError,
+  AuthenticationError,
+  PubSub,
+} = require("apollo-server");
 const jwt = require("jsonwebtoken");
+const pubsub = new PubSub();
 
 const config = require("../utils/config");
 const Book = require("../models/book");
@@ -76,6 +81,8 @@ const resolvers = {
         });
 
         result = await Book.findById(book._id).populate("author");
+
+        pubsub.publish("BOOK_ADDED", { bookAdded: result });
         return result;
       } else if (authorExists == null) {
         const author = new Author({ name: args.author });
@@ -99,6 +106,7 @@ const resolvers = {
         });
 
         result = await Book.findById(book._id).populate("author");
+        pubsub.publish("BOOK_ADDED", { bookAdded: result });
         return result;
       }
     },
@@ -149,6 +157,11 @@ const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, JWT_SECRET) };
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(["BOOK_ADDED"]),
     },
   },
 };
