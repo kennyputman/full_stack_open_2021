@@ -1,12 +1,12 @@
-import { useApolloClient, useLazyQuery, useQuery } from "@apollo/client";
-import React, { useState, useEffect } from "react";
+import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
+import React, { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
-import { ALL_AUTHORS, ALL_BOOKS, ME } from "./queries";
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED, ME } from "./queries";
 import Recommendations from "./components/Recommendations";
 
 const App = () => {
@@ -22,9 +22,6 @@ const App = () => {
   const { data: books, loading: booksLoading } = useQuery(ALL_BOOKS);
   const { data: user } = useQuery(ME);
 
-  const [getRecs, { data: userRecs, loading: userRecsLoading }] =
-    useLazyQuery(ALL_BOOKS);
-
   const notify = (message) => {
     setErrorMessage(message);
     setTimeout(() => {
@@ -32,7 +29,29 @@ const App = () => {
     }, 5000);
   };
 
-  if (authorsLoading || booksLoading || userRecsLoading) {
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map((p) => p.id).includes(object.id);
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) },
+      });
+    }
+  };
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded;
+      console.log(addedBook);
+      // notify(`${addedBook.name} added`);
+      updateCacheWith(addedBook);
+    },
+  });
+
+  if (authorsLoading || booksLoading) {
     return <div>loading...</div>;
   }
 
@@ -57,10 +76,13 @@ const App = () => {
         show={page === "recommendations"}
         user={user.me}
         books={books.allBooks}
-        onClick={() => getRecs({ variables: { genre: user.me.favoriteGenre } })}
       ></Recommendations>
 
-      <NewBook show={page === "add"} />
+      <NewBook
+        show={page === "add"}
+        setError={notify}
+        updateCacheWith={updateCacheWith}
+      />
       <LoginForm
         show={page === "login"}
         setToken={setToken}
