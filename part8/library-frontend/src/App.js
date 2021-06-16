@@ -46,7 +46,7 @@ const App = () => {
     onSubscriptionData: ({ subscriptionData }) => {
       const addedBook = subscriptionData.data.bookAdded;
       console.log(addedBook);
-      // notify(`${addedBook.name} added`);
+      notify(`${addedBook.title} added`);
       updateCacheWith(addedBook);
     },
   });
