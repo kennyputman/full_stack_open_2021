@@ -16,8 +16,7 @@ const Recommendations = ({ show }) => {
   }, [setRecommendations, result]);
 
   useEffect(() => {
-    if (user.data) {
-      console.log(user.data.me);
+    if (!user.loading && user.data.me !== null) {
       getRecommendations({ variables: { genre: user.data.me.favoriteGenre } });
       setfavoriteGenre(user.data.me.favoriteGenre);
     }
