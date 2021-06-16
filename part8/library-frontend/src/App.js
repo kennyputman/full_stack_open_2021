@@ -6,7 +6,7 @@ import NewBook from "./components/NewBook";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
-import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED, ME } from "./queries";
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from "./queries";
 import Recommendations from "./components/Recommendations";
 
 const App = () => {
@@ -20,7 +20,6 @@ const App = () => {
 
   const { data: authors, loading: authorsLoading } = useQuery(ALL_AUTHORS);
   const { data: books, loading: booksLoading } = useQuery(ALL_BOOKS);
-  const { data: user } = useQuery(ME);
 
   const notify = (message) => {
     setErrorMessage(message);
@@ -72,11 +71,7 @@ const App = () => {
       />
 
       <Books show={page === "books"} books={books.allBooks} />
-      <Recommendations
-        show={page === "recommendations"}
-        user={user.me}
-        books={books.allBooks}
-      ></Recommendations>
+      <Recommendations show={page === "recommendations"}></Recommendations>
 
       <NewBook
         show={page === "add"}
