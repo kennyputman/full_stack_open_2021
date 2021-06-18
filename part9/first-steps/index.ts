@@ -10,7 +10,7 @@ app.get("/hello", (_req, res) => {
 });
 
 app.get("/bmi", (req, res) => {
-  let info = req.query;
+  const info = req.query;
 
   if (!info.height || !info.weight) {
     res.status(400).json({ error: "please include height and weight" });

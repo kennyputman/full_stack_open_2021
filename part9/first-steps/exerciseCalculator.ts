@@ -6,7 +6,7 @@ interface ExerciseLog {
 const exerciseParser = (args: Array<string>): ExerciseLog => {
   if (args.length < 4) throw new Error("Please enter traning days ");
 
-  let converter: number[] = [];
+  const converter: number[] = [];
   const argsList = args.slice(2);
   argsList.forEach((n) => {
     if (!isNaN(Number(n))) {
@@ -26,7 +26,7 @@ const calculateExercises = (exLog: ExerciseLog) => {
   const trainDays = exLog.log.filter((d) => d > 0).length;
   const success = trainDays > exLog.target ? true : false;
 
-  let rating: number = 1;
+  let rating = 1;
   let ratingDescription = "Next time you will get it!";
   if (trainDays === exLog.target) {
     rating = 2;
@@ -48,8 +48,9 @@ const calculateExercises = (exLog: ExerciseLog) => {
 };
 
 try {
-  let exerciseLog = exerciseParser(process.argv);
+  const exerciseLog = exerciseParser(process.argv);
   console.log(calculateExercises(exerciseLog));
 } catch (e) {
-  console.log("Error, somethign bad happend, message: ", e.message);
+  if (e instanceof Error)
+    console.log("Error, somethign bad happend, message: ", e.message);
 }
