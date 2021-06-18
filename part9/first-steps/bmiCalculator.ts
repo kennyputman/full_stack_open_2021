@@ -17,22 +17,22 @@ const parser = (args: Array<string>): BMIValues => {
   }
 };
 
-const calculateBmi = (height: number, weight: number): void => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2;
   if (bmi < 18.5) {
-    console.log(`BMI: ${bmi.toFixed(1)} - Underweight`);
+    return `BMI: ${bmi.toFixed(1)} - Underweight`;
   } else if (bmi <= 24.9) {
-    console.log(`BMI: ${bmi.toFixed(1)} - Normal (Healthy Weight)`);
+    return `BMI: ${bmi.toFixed(1)} - Normal (Healthy Weight)`;
   } else if (bmi <= 29.9) {
-    console.log(`BMI: ${bmi.toFixed(1)} - Overweight`);
+    return `BMI: ${bmi.toFixed(1)} - Overweight`;
   } else {
-    console.log(`BMI: ${bmi.toFixed(1)} - Obese`);
+    return `BMI: ${bmi.toFixed(1)} - Obese`;
   }
 };
 
 try {
   let { height, weight } = parser(process.argv);
-  calculateBmi(height, weight);
+  console.log(calculateBmi(height, weight));
 } catch (e) {
   console.log("Error, somethign bad happend, message: ", e.message);
 }
