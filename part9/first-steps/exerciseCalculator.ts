@@ -1,6 +1,6 @@
 interface ExerciseLog {
   target: number;
-  log: Array<number>;
+  daily_exercises: Array<number>;
 }
 
 const exerciseParser = (args: Array<string>): ExerciseLog => {
@@ -18,17 +18,20 @@ const exerciseParser = (args: Array<string>): ExerciseLog => {
 
   return {
     target: converter[0],
-    log: converter.slice(1),
+    daily_exercises: converter.slice(1),
   };
 };
 
-const calculateExercises = (exLog: ExerciseLog) => {
-  const trainDays = exLog.log.filter((d) => d > 0).length;
-  const success = trainDays > exLog.target ? true : false;
+export const calculateExercises = (exLog: ExerciseLog) => {
+  const trainDays = exLog.daily_exercises.filter((d) => d > 0).length;
+  const average =
+    exLog.daily_exercises.reduce((p, c) => p + c) /
+    exLog.daily_exercises.length;
+  const success = average > exLog.target ? true : false;
 
   let rating = 1;
   let ratingDescription = "Next time you will get it!";
-  if (trainDays === exLog.target) {
+  if (average === exLog.target) {
     rating = 2;
     ratingDescription = "On Track!";
   } else if (success) {
@@ -37,13 +40,13 @@ const calculateExercises = (exLog: ExerciseLog) => {
   }
 
   return {
-    periodLength: exLog.log.length,
+    periodLength: exLog.daily_exercises.length,
     trainingDays: trainDays,
     target: exLog.target,
     success: success,
     rating: rating,
     ratingDescription: ratingDescription,
-    average: exLog.log.reduce((p, c) => p + c) / exLog.log.length,
+    average: average.toFixed(2),
   };
 };
 
