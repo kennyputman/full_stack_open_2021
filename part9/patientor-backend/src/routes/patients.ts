@@ -5,7 +5,17 @@ import newPatientValidator from "../utils/newPatientValidator";
 const router = express.Router();
 
 router.get("/", (_req, res) => {
-  res.json(patientService.getNonSensitivePatients());
+  res.json(patientService.getPublicPatient());
+});
+
+router.get("/:id", (req, res) => {
+  const patient = patientService.getPatientById(req.params.id);
+
+  if (patient) {
+    res.json(patient);
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 router.post("/", (req, res) => {
