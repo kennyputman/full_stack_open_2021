@@ -3,10 +3,10 @@ import { Courses } from "../types";
 
 const Total = ({ courseParts }: Courses) => {
   return (
-    <p>
+    <div>
       Number of exercises{" "}
       {courseParts.reduce((carry, part) => carry + part.exerciseCount, 0)}
-    </p>
+    </div>
   );
 };
 

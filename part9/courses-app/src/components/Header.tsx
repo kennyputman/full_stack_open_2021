@@ -1,8 +1,5 @@
 import React from "react";
-
-interface HeaderProps {
-  courseName: string;
-}
+import { HeaderProps } from "../types";
 
 const Header = ({ courseName }: HeaderProps) => {
   return (
