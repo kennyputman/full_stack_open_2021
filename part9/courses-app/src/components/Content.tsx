@@ -1,22 +1,16 @@
 import React from "react";
+import { CoursesProps, Courses } from "../types";
 
-interface Content {
-  name: string;
-  exerciseCount: number;
-}
-
-interface ContentList {
-  courses: Content[];
-}
-
-const Content = ({ courses }: ContentList) => {
-  courses.map((course) => {
-    return (
-      <p key={course.name}>
-        {course.name} {course.exerciseCount}
-      </p>
-    );
-  });
+const Content = ({ courseParts }: Courses) => {
+  return (
+    <div>
+      {courseParts.map((course: CoursesProps) => (
+        <p key={course.name}>
+          {course.name} {course.exerciseCount}
+        </p>
+      ))}
+    </div>
+  );
 };
 
 export default Content;
