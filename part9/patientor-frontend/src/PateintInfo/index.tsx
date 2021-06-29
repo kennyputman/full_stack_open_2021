@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { Container, Icon } from "semantic-ui-react";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
 import { Patient } from "../types";
@@ -9,27 +10,53 @@ const PatientInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient }, dispatch] = useStateValue();
   React.useEffect(() => {
-    void axios.get<void>(`${apiBaseUrl}/patients/${id}`);
+    if (patient === undefined || patient.id !== id) {
+      void axios.get<void>(`${apiBaseUrl}/patients/${id}`);
 
-    const fetchPatient = async () => {
-      try {
-        const { data: patient } = await axios.get<Patient>(
-          `${apiBaseUrl}/patients/${id}`
-        );
-        dispatch({ type: "SET_PATIENT", payload: patient });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    void fetchPatient();
+      const fetchPatient = async () => {
+        try {
+          const { data: patient } = await axios.get<Patient>(
+            `${apiBaseUrl}/patients/${id}`
+          );
+          dispatch({ type: "SET_PATIENT", payload: patient });
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      void fetchPatient();
+    }
   }, [dispatch]);
 
-  console.log(Object.values(patient));
+  let gender: "mars" | "venus" | "genderless";
+
+  switch (patient?.gender) {
+    case "male":
+      gender = "mars";
+      break;
+    case "female":
+      gender = "venus";
+      break;
+    default:
+      gender = "genderless";
+      break;
+  }
+
+  if (patient === undefined || patient.id !== id) {
+    return <div>...loading</div>;
+  }
+
+  console.log(patient);
 
   return (
-    <div className="App">
-      <p>{Object.values(patient)[0].name}</p>
-    </div>
+    <Container>
+      <h2>
+        {patient.name}
+        <Icon name={gender}></Icon>
+      </h2>
+
+      <p>ssn: {patient.ssn}</p>
+      <p>Occupation: {patient.occupation}</p>
+    </Container>
   );
 };
 

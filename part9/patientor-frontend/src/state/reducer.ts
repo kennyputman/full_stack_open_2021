@@ -40,7 +40,7 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         patient: {
-          [action.payload.id]: action.payload,
+          ...action.payload,
         },
       };
     default:
