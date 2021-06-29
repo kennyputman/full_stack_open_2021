@@ -55,6 +55,7 @@ type Fields = {
   ssn: unknown;
   gender: unknown;
   occupation: unknown;
+  entries: string[];
 };
 
 const newPatientValidator = ({
@@ -63,6 +64,7 @@ const newPatientValidator = ({
   ssn,
   gender,
   occupation,
+  entries,
 }: Fields): NewPatient => {
   const newPatient: NewPatient = {
     name: parseName(name),
@@ -70,6 +72,7 @@ const newPatientValidator = ({
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
     occupation: parseOccupation(occupation),
+    entries: entries,
   };
 
   return newPatient;
