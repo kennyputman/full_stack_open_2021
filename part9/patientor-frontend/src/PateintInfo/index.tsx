@@ -45,8 +45,6 @@ const PatientInfoPage = () => {
     return <div>...loading</div>;
   }
 
-  console.log(patient);
-
   return (
     <Container>
       <h2>
@@ -56,6 +54,17 @@ const PatientInfoPage = () => {
 
       <p>ssn: {patient.ssn}</p>
       <p>Occupation: {patient.occupation}</p>
+      <h2>Entries</h2>
+      {patient.entries.map((entry) => (
+        <div key={entry.id}>
+          <p>{entry.description}</p>
+          <ul>
+            {entry.diagnosisCodes?.map((code) => (
+              <li key={code}>{code}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </Container>
   );
 };
