@@ -8,7 +8,7 @@ import { Patient } from "../types";
 
 const PatientInfoPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, diagnoses }, dispatch] = useStateValue();
   React.useEffect(() => {
     if (patient === undefined || patient.id !== id) {
       void axios.get<void>(`${apiBaseUrl}/patients/${id}`);
@@ -26,6 +26,8 @@ const PatientInfoPage = () => {
       void fetchPatient();
     }
   }, [dispatch]);
+
+  const diagnosisList = Object.values(diagnoses);
 
   let gender: "mars" | "venus" | "genderless";
 
@@ -60,7 +62,13 @@ const PatientInfoPage = () => {
           <p>{entry.description}</p>
           <ul>
             {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>{code}</li>
+              <li key={code}>
+                {code}{" "}
+                {
+                  diagnosisList.find((diagnosis) => diagnosis.code === code)
+                    ?.name
+                }
+              </li>
             ))}
           </ul>
         </div>
