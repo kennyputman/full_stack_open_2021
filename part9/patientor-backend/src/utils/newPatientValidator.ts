@@ -1,4 +1,4 @@
-import { Gender, NewPatient } from "../types/patientTypes";
+import { Entry, Gender, NewPatient } from "../types/patientTypes";
 
 const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
@@ -55,7 +55,7 @@ type Fields = {
   ssn: unknown;
   gender: unknown;
   occupation: unknown;
-  entries: string[];
+  entries: Entry[];
 };
 
 const newPatientValidator = ({
