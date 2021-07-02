@@ -1,14 +1,24 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Container, Icon } from "semantic-ui-react";
+import { Card, Container, Icon } from "semantic-ui-react";
 import { apiBaseUrl } from "../constants";
 import { setPatient, useStateValue } from "../state";
-import { Patient } from "../types";
+import { Entry, Patient } from "../types";
+import EntryDetails from "./EntryDetails";
+import Loading from "./Loading";
 
 const PatientInfoPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patient, diagnoses }, dispatch] = useStateValue();
+  const [{ patient }, dispatch] = useStateValue();
+  const [showSpinner, SetShowSpinner] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => SetShowSpinner(true), 500);
+
+    return () => clearTimeout(timer);
+  });
+
   React.useEffect(() => {
     if (patient === undefined || patient.id !== id) {
       void axios.get<void>(`${apiBaseUrl}/patients/${id}`);
@@ -27,8 +37,6 @@ const PatientInfoPage = () => {
     }
   }, [dispatch]);
 
-  const diagnosisList = Object.values(diagnoses);
-
   let gender: "mars" | "venus" | "genderless";
 
   switch (patient?.gender) {
@@ -44,7 +52,7 @@ const PatientInfoPage = () => {
   }
 
   if (patient === undefined || patient.id !== id) {
-    return <div>...loading</div>;
+    return <Loading showSpinner={showSpinner}></Loading>;
   }
 
   return (
@@ -57,22 +65,11 @@ const PatientInfoPage = () => {
       <p>ssn: {patient.ssn}</p>
       <p>Occupation: {patient.occupation}</p>
       <h2>Entries</h2>
-      {patient.entries.map((entry) => (
-        <div key={entry.id}>
-          <p>{entry.description}</p>
-          <ul>
-            {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>
-                {code}{" "}
-                {
-                  diagnosisList.find((diagnosis) => diagnosis.code === code)
-                    ?.name
-                }
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <Card.Group>
+        {patient.entries.map((entry: Entry) => (
+          <EntryDetails key={entry.id} entry={entry}></EntryDetails>
+        ))}
+      </Card.Group>
     </Container>
   );
 };
