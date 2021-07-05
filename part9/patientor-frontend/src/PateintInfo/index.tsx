@@ -1,10 +1,11 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Card, Container, Icon } from "semantic-ui-react";
+import { Button, Card, Container, Icon } from "semantic-ui-react";
+import AddEntryModal from "../AddEntryModal";
 import { apiBaseUrl } from "../constants";
 import { setPatient, useStateValue } from "../state";
-import { Entry, Patient } from "../types";
+import { Entry, EntryFormValues, Patient } from "../types";
 import EntryDetails from "./EntryDetails";
 import Loading from "./Loading";
 
@@ -12,6 +13,35 @@ const PatientInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient }, dispatch] = useStateValue();
   const [showSpinner, SetShowSpinner] = React.useState<boolean>(false);
+
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    console.log(values);
+    try {
+      // const { data: newEntry } = await axios.post<EntryFormValues>(
+      //   `${apiBaseUrl}/${id}/entries/`,
+      //   values
+      // );
+      await axios.post<EntryFormValues>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      // dispatch(addEntry(newEntry));
+      closeModal();
+    } catch (e) {
+      console.error(e.response?.data || "Unknown Error");
+      setError(e.response?.data?.error || "Unknown error");
+    }
+  };
 
   React.useEffect(() => {
     const timer = setTimeout(() => SetShowSpinner(true), 500);
@@ -56,21 +86,31 @@ const PatientInfoPage = () => {
   }
 
   return (
-    <Container>
-      <h2>
-        {patient.name}
-        <Icon name={gender}></Icon>
-      </h2>
+    <div>
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button onClick={() => openModal()}>Add New Entry</Button>
+      <Container>
+        <h2>
+          {patient.name}
+          <Icon name={gender}></Icon>
+        </h2>
 
-      <p>ssn: {patient.ssn}</p>
-      <p>Occupation: {patient.occupation}</p>
-      <h2>Entries</h2>
-      <Card.Group>
-        {patient.entries.map((entry: Entry) => (
-          <EntryDetails key={entry.id} entry={entry}></EntryDetails>
-        ))}
-      </Card.Group>
-    </Container>
+        <p>ssn: {patient.ssn}</p>
+        <p>Occupation: {patient.occupation}</p>
+        <h2>Entries</h2>
+
+        <Card.Group>
+          {patient.entries.map((entry: Entry) => (
+            <EntryDetails key={entry.id} entry={entry}></EntryDetails>
+          ))}
+        </Card.Group>
+      </Container>
+    </div>
   );
 };
 
