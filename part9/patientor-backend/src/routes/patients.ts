@@ -1,5 +1,6 @@
 import express from "express";
 import patientService from "../services/patientService";
+import newEntryValidator from "../utils/newEntryValidator";
 import newPatientValidator from "../utils/newPatientValidator";
 
 const router = express.Router();
@@ -25,6 +26,19 @@ router.post("/", (req, res) => {
     const newPatient = patientService.addPatient(validatedPatient);
 
     res.json(newPatient);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+router.post("/:id/entries", (req, res) => {
+  try {
+    console.log(req.body);
+    const newEntry = newEntryValidator(req.body);
+    const patientId = req.params.id;
+    console.log(newEntry);
+    const entry = patientService.addPatientEntry(newEntry, patientId);
+    res.json(entry);
   } catch (e) {
     res.status(400).send(e.message);
   }
