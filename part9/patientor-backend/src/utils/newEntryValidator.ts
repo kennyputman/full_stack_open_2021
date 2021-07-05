@@ -64,16 +64,18 @@ const parseDiagnosisCodes = (codes: unknown): Array<Diagnosis["code"]> => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isRating = (param: any): param is HealthCheckRating => {
+const isRating = (param: number): param is HealthCheckRating => {
+  console.log("Values", Object.values(HealthCheckRating));
   return Object.values(HealthCheckRating).includes(param);
 };
 
-const parseHealthCheckRating = (rating: unknown): HealthCheckRating => {
-  if (!rating || !isRating(rating)) {
+const parseHealthCheckRating = (rating: any): HealthCheckRating => {
+  const ratingNum = parseInt(rating);
+
+  if (!isRating(ratingNum)) {
     throw new Error("Incorrect or missing rating: " + rating);
   }
-  return rating;
+  return ratingNum;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
