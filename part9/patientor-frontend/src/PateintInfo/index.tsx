@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Button, Card, Container, Icon } from "semantic-ui-react";
+import { Button, Card, Container, Icon, Select } from "semantic-ui-react";
 import AddEntryModal from "../AddEntryModal";
 import { apiBaseUrl } from "../constants";
 import { setPatient, useStateValue } from "../state";
@@ -13,6 +13,7 @@ const PatientInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient }, dispatch] = useStateValue();
   const [showSpinner, SetShowSpinner] = React.useState<boolean>(false);
+  const [entryType, setEntryType] = React.useState<string>("Hospital");
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -81,6 +82,24 @@ const PatientInfoPage = () => {
       break;
   }
 
+  const entryOptions = [
+    { key: "HealthCheck", value: "HealthCheck", text: "HealthCheck" },
+    { key: "Hospital", value: "Hospital", text: "Hospital" },
+    {
+      key: "OccupationalHealthcare",
+      value: "OccupationalHealthcare",
+      text: "OccupationalHealthcare",
+    },
+  ];
+
+  const entryTypeHandler = (
+    event: React.SyntheticEvent<HTMLElement>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any
+  ) => {
+    setEntryType(data.value);
+  };
+
   if (patient === undefined || patient.id !== id) {
     return <Loading showSpinner={showSpinner}></Loading>;
   }
@@ -92,7 +111,14 @@ const PatientInfoPage = () => {
         onSubmit={submitNewEntry}
         error={error}
         onClose={closeModal}
+        entryType={entryType}
       />
+      <Select
+        label="Entry Type"
+        placeholder="Select an Entry Type"
+        options={entryOptions}
+        onChange={entryTypeHandler}
+      ></Select>
       <Button onClick={() => openModal()}>Add New Entry</Button>
       <Container>
         <h2>
