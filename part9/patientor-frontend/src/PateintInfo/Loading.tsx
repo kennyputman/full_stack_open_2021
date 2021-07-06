@@ -1,12 +1,12 @@
 import React from "react";
-import { Icon } from "semantic-ui-react";
+import { Container, Icon } from "semantic-ui-react";
 
 const Loading: React.FC<{ showSpinner: boolean }> = ({ showSpinner }) => {
   if (showSpinner) {
     return (
-      <div>
+      <Container>
         <Icon loading size="big" name="spinner"></Icon>
-      </div>
+      </Container>
     );
   }
 
