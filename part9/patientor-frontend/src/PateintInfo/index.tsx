@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Button, Card, Container, Icon, Select } from "semantic-ui-react";
 import AddEntryModal from "../AddEntryModal";
 import { apiBaseUrl } from "../constants";
-import { setPatient, useStateValue } from "../state";
+import { addPatientEntry, setPatient, useStateValue } from "../state";
 import { Entry, EntryFormValues, Patient } from "../types";
 import EntryDetails from "./EntryDetails";
 import Loading from "./Loading";
@@ -28,15 +28,13 @@ const PatientInfoPage = () => {
   const submitNewEntry = async (values: EntryFormValues) => {
     console.log(values);
     try {
-      // const { data: newEntry } = await axios.post<EntryFormValues>(
-      //   `${apiBaseUrl}/${id}/entries/`,
-      //   values
-      // );
-      await axios.post<EntryFormValues>(
-        `${apiBaseUrl}/patients/${id}/entries`,
-        values
-      );
-      // dispatch(addEntry(newEntry));
+      const { data: newEntry } = await axios.post<
+        EntryFormValues,
+        AxiosResponse<Entry>
+      >(`${apiBaseUrl}/patients/${id}/entries`, values);
+      console.log(newEntry);
+
+      dispatch(addPatientEntry(newEntry));
       closeModal();
     } catch (e) {
       console.error(e.response?.data || "Unknown Error");
