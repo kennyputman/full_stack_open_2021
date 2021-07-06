@@ -2,22 +2,18 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, RatingOption, SelectField } from "./FormField";
-import { EntryFormValues, HealthCheckRating } from "../types";
+import { DiagnosisSelection, TextField } from "./FormField";
+import { OccupationalFormValues } from "../types";
+import { useStateValue } from "../state";
 
 interface Props {
-  onSubmit: (values: EntryFormValues) => void;
+  onSubmit: (values: OccupationalFormValues) => void;
   onCancel: () => void;
 }
 
-const ratingOptions: RatingOption[] = [
-  { value: HealthCheckRating.Healthy, label: "Healthy" },
-  { value: HealthCheckRating.LowRisk, label: "Low Risk" },
-  { value: HealthCheckRating.HighRisk, label: "High Risk" },
-  { value: HealthCheckRating.CriticalRisk, label: "Critical Risk" },
-];
-
 export const OccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
+  const [{ diagnoses }] = useStateValue();
+
   return (
     <Formik
       initialValues={{
@@ -25,8 +21,12 @@ export const OccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
         specialist: "",
         date: "",
         diagnosisCodes: [],
-        type: "HealthCheck",
-        healthCheckRating: HealthCheckRating.Healthy,
+        type: "OccupationalHealthcare",
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -41,20 +41,20 @@ export const OccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.date) {
           errors.date = requiredError;
         }
-        if (!values.diagnosisCodes) {
-          errors.diagnosisCodes = requiredError;
+        if (!values.employerName) {
+          errors.employerName = requiredError;
         }
-        if (!values.type) {
-          errors.type = requiredError;
+        if (!values.sickLeave) {
+          errors.sickLeave = requiredError;
         }
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
             <Field
-              label="Occupational Entry Form!!!!!!!!!!!!"
+              label="Specialist"
               placeholder="Specialist"
               name="specialist"
               component={TextField}
@@ -71,17 +71,30 @@ export const OccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="date"
               component={TextField}
             />
+            <DiagnosisSelection
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+              diagnoses={Object.values(diagnoses)}
+            />
             <Field
-              label="Diagnosis Codes"
-              placeholder="Diagnosis Codes"
-              name="diagnosisCodes"
+              label="Employer Name"
+              placeholder="Employer Name"
+              name="employerName"
               component={TextField}
             />
-            <SelectField
-              label="Rating"
-              name="ratingOptions"
-              options={ratingOptions}
+            <Field
+              label="Sick Leave Start Date"
+              placeholder="Sick Leave Start Date"
+              name="sickLeave.startDate"
+              component={TextField}
             />
+            <Field
+              label="Sick Leave End Date"
+              placeholder="Sick Leave End Date"
+              name="sickLeave.endDate"
+              component={TextField}
+            />
+
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">

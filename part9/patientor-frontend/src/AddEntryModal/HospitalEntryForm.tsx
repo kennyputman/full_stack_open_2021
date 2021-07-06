@@ -2,8 +2,9 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField } from "./FormField";
+import { DiagnosisSelection, TextField } from "./FormField";
 import { HospitalFormValues } from "../types";
+import { useStateValue } from "../state";
 
 interface Props {
   onSubmit: (values: HospitalFormValues) => void;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
+  const [{ diagnoses }] = useStateValue();
   return (
     <Formik
       initialValues={{
@@ -37,9 +39,6 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.date) {
           errors.date = requiredError;
         }
-        if (!values.diagnosisCodes) {
-          errors.diagnosisCodes = requiredError;
-        }
         if (!values.discharge.date) {
           errors.discharge = requiredError;
         }
@@ -49,7 +48,7 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
             <Field
@@ -70,11 +69,10 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="date"
               component={TextField}
             />
-            <Field
-              label="Diagnosis Codes"
-              placeholder="Diagnosis Codes"
-              name="diagnosisCodes"
-              component={TextField}
+            <DiagnosisSelection
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+              diagnoses={Object.values(diagnoses)}
             />
             <Field
               label="Discharge Date"

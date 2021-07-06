@@ -2,11 +2,17 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, RatingOption, SelectField } from "./FormField";
-import { EntryFormValues, HealthCheckRating } from "../types";
+import {
+  TextField,
+  RatingOption,
+  SelectField,
+  DiagnosisSelection,
+} from "./FormField";
+import { HealthCheckFormValues, HealthCheckRating } from "../types";
+import { useStateValue } from "../state";
 
 interface Props {
-  onSubmit: (values: EntryFormValues) => void;
+  onSubmit: (values: HealthCheckFormValues) => void;
   onCancel: () => void;
 }
 
@@ -18,6 +24,7 @@ const ratingOptions: RatingOption[] = [
 ];
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+  const [{ diagnoses }] = useStateValue();
   return (
     <Formik
       initialValues={{
@@ -41,16 +48,13 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.date) {
           errors.date = requiredError;
         }
-        if (!values.diagnosisCodes) {
-          errors.diagnosisCodes = requiredError;
-        }
         if (!values.type) {
           errors.type = requiredError;
         }
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
             <Field
@@ -71,11 +75,10 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="date"
               component={TextField}
             />
-            <Field
-              label="Diagnosis Codes"
-              placeholder="Diagnosis Codes"
-              name="diagnosisCodes"
-              component={TextField}
+            <DiagnosisSelection
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+              diagnoses={Object.values(diagnoses)}
             />
             <SelectField
               label="Rating"

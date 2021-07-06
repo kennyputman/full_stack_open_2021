@@ -70,3 +70,5 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown
   : never;
 export type EntryFormValues = UnionOmit<Entry, "id">;
 export type HospitalFormValues = Omit<HospitalEntry, "id">;
+export type OccupationalFormValues = Omit<OccupationalHealthcareEntry, "id">;
+export type HealthCheckFormValues = Omit<HealthCheckEntry, "id">;
