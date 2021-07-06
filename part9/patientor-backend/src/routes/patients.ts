@@ -22,6 +22,7 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   try {
     const validatedPatient = newPatientValidator(req.body);
+    console.log(validatedPatient);
 
     const newPatient = patientService.addPatient(validatedPatient);
 
