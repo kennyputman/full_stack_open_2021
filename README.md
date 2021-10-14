@@ -2,7 +2,16 @@
 
 My solutions to The University of Helsinki's [Full Stack Open](https://fullstackopen.com/en/)
 
-The course primarily covered the MERN stack with sections on testing (Jest, Cypress), GraphQL (Apollo), Typescript, React Native, CI/CD (Github Actions), and Containers (Docker)
+Topics Covered:
+- Javascript, Node.js, HTML/CSS
+- Express
+- React, Redux
+- Testing: Unit, Integration, and end-to-end using Jest and Cypress
+- GraphQL: Apollo server and client
+- Typescript
+- React Native
+- CI/CD: Github Actions
+- Containers: Docker
 
 
 Some sections were completed in other repositories. Links to them are listed below. 
